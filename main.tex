@@ -1,0 +1,40 @@
+\documentclass[a4paper, 12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% -- packages for titlepage
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{relsize}
+\usepackage{moresize}
+\usepackage{graphicx}
+\usepackage{geometry}
+% -- end packages for title page
+
+% [CHANGE] The title of your thesis. If your thesis has a subtitle, then this
+% should appear right below the main title, in a smaller font.
+\newcommand{\theTitle}{The first sentence \\
+\vspace{0.5em}
+the second sentence}
+\newcommand{\theSubTitle}{a smaller subtitle}
+\newcommand{\theAuthor}{Yochem van Rosmalen}
+\newcommand{\theStudentID}{12223247}
+\newcommand{\theSupervisor}{Dr. Z. Zhao}
+\newcommand{\theInstitute}{
+Informatics Institute\\
+Faculty of Science\\
+University of Amsterdam\\
+Science Park 904\\
+1098 XH Amsterdam
+}
+% [CHANGE] The date at which you will finalize and submit your thesis.
+\newcommand{\theDate}{Jun, 2021}
+
+\begin{document}
+
+\input{frontpages.tex}
+
+\chapter{Introduction}
+\chapter{Conclusion}
+
+\end{document}
