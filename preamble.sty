@@ -1,0 +1,39 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage[bottom]{footmisc}
+
+% -- packages for titlepage
+\usepackage[dvipsnames]{xcolor}
+\usepackage{afterpage}
+\usepackage{relsize}
+\usepackage{moresize}
+\usepackage{graphicx}
+\usepackage{geometry}
+% -- end packages for title page
+
+\hypersetup{
+  linkcolor  = violet!85!black,
+  citecolor  = YellowOrange!85!black,
+  urlcolor   = Aquamarine!85!black,
+  colorlinks = true,
+}
+
+% [CHANGE] The title of your thesis. If your thesis has a subtitle, then this
+% should appear right below the main title, in a smaller font.
+\newcommand{\theTitle}{The first sentence \\
+\vspace{0.5em}
+the second sentence}
+\newcommand{\theSubTitle}{a smaller subtitle}
+\newcommand{\theAuthor}{Yochem van Rosmalen}
+\newcommand{\theStudentID}{12223247}
+\newcommand{\theSupervisor}{Dr. Z. Zhao}
+\newcommand{\theInstitute}{
+Informatics Institute\\
+Faculty of Science\\
+University of Amsterdam\\
+Science Park 904\\
+1098 XH Amsterdam
+}
+\newcommand{\theDate}{June 25, 2021}
