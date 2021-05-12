@@ -1,0 +1,40 @@
+\chapter{Related Work}
+
+In Chapter \ref{sec:intro} multiple RL based schedulers were discussed. These
+schedulers lack robustness: flexible environments are not handled well.
+Methods for improving robustness of RL models exist, but are not yet
+integrated in RL based schedulers. Integrating these methods would improve
+robustness and reduce retraining time. In this chapter related work on RL
+based schedulers, assessing robustness of RL methods and state-of-the-art
+approaches for reducing retraining time is discussed.
+
+\note{NOTE: regret?
+\url{https://www.researchgate.net/post/How_to_evaluate_reinforcement_learning_model}}
+
+
+\note{NOTE: How can we effectively assess and compare RL based methods in job
+scheduling?}
+
+Currently there is not yet a standard evaluation method for RL models. Due to
+the absence of a standard evaluation model, reproducibility often becomes more
+difficult. Work is done in defining standard evaluation methods, but these
+methods are not yet the industry standard. An evaluation method that is
+currently used is regret. Regret can only be used as a metric when an agent
+with optimal policy can be defined. The difference in actions taken is the
+regret per action. This is defined as the reward for the action of the optimal
+agent minus the reward for the taken action. Knowing the optimal policy is not
+always possible.
+
+There are also non-scientific metrics used to evaluate RL models. Some
+non-scientific metrics that were used to evaluate RL models are popular,
+well-defined environments like the openAI gym \cite{gym2016}. A comparison of
+RL models is done on their
+leaderboard\footlink{github.com/openai/gym/wiki/Leaderboard}. The used metric
+is the number of episodes it took to solve the problem. More scientific
+evaluation methodologies have been proposed, e.g. a framework for comparison
+in \citeA{khetarpal2018} and a novel evaluation method in \citeA{jordan2020}.
+
+
+\note{NOTE: What are the indicators to assess robustness of RL based schedulers?}
+
+\note{NOTE: What are the state-of-the-art approaches for reducing retraining time?}
