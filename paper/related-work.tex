@@ -1,23 +1,119 @@
 \chapter{Related Work}
 
-In Chapter \ref{sec:intro} multiple RL based schedulers were discussed. These
-schedulers lack robustness: flexible environments are not handled well.
-Methods for improving robustness of RL models exist, but are not yet
-integrated in RL based schedulers. Integrating these methods would improve
-robustness and reduce retraining time. In this chapter related work on RL
-based schedulers, assessing robustness of RL methods and state-of-the-art
-approaches for reducing retraining time is discussed.
-
-\note{NOTE: regret?
-\url{https://www.researchgate.net/post/How_to_evaluate_reinforcement_learning_model}}
+In this chapter related work is discussed. In the first section the scope of
+the thesis is defined and the methodology of finding related work is
+described. Thereafter related work on the topics of job scheduling and its
+NP-hardness, \rl based schedulers, assessing robustness of \rl methods and
+approaches for reducing retraining time is discussed. Finally, the gap of in
+the related work is shown.
 
 
-\note{NOTE: How can we effectively assess and compare RL based methods in job
-scheduling?}
+\section{Scope and Methodology}
 
-\section{Evaluation of Reinforcement Learning models}
+Comparing different methods and models is the main task in this thesis. To
+compare methods of models, a justified way of assessing methods and models is
+needed. It is also important that the comparison is done on the indicators on
+which the performance depends. These are called the \kpis.
 
-Currently there is not yet a standard evaluation method for RL models. Due to
+\note{unfinished}
+
+
+\section{Job Scheduling}\label{sec:scheduling}
+
+Imagine cloud systems as described in Section \ref{sec:cloud}. These systems
+have many tasks, or as in this thesis called jobs, that need to be executed
+for it to function. Jobs are scheduled by a job scheduler or simply called the
+scheduler. These jobs vary a lot in duration time and resource-need. To
+illustrate, if the cloud environment provides a back-end for a website, a job
+could be one of the following: Serving the right HTML page to a visiting user,
+compressing user uploaded images, spam filtering, detecting anomalies in user
+logins or many other types of jobs that need to be executed to provide a fully
+functioning website. The schedulers distributes jobs over many resources,
+provided by a cloud environment. Optimally distributing the jobs is important
+for cloud environments, because efficiently using resources means there are
+less resources needed and jobs will complete in a shorter time. Thus, well
+working schedulers are important for cloud environments, because efficiently
+using resources saves money and is easier to maintain.
+
+What is efficient and how can schedulers be efficient? There are many metrics
+on which optimization can be done to make a scheduler more efficient. For
+example minimizing job slowdown time, minimizing average completion time,
+maximizing throughput (jobs per time unit) or minimizing total completion time
+(the makespan). Schedulers are created to be optimized on one or more of these
+aspects, varying the importance. Unfortunately, the optimization of schedulers
+is complex. It is a well-known problem in computer science, because of its
+NP-hardness. In the next paragraph is explained what it means to be a NP-hard
+problem and the reason that job scheduling is NP-hard.
+
+
+\subsection{NP-Hard}
+
+NP-hardness is a term used in the P versus NP problem. This problem is one of
+the seven Millennium Prize Problems \cite{carlson2006} and still unsolved. The
+P versus NP problem is about computational complexity, a way of categorizing
+problems based on `how hard' they are. Computational problems have two
+complexity aspects: the complexity to solve the problem and the complexity to
+verify if the solution to the problem is correct. The question is if the
+solution to a given problem can be verified quickly (in polynomial time), is
+there an algorithm that can find the solution quickly? If this is true, P
+equals NP. Many computer scientists believe this is not the case for all
+problems \cite{rosenberger2012}. Believed is that there are problems that can
+be verified quickly but not solved quickly, which are called NP-hard problems.
+A well-known NP-hard problem is the Sudoku puzzle, especially larger ones
+\cite{yato2003}.
+
+Job scheduling is a generalized version of the traveling salesperson problem.
+The problem is as follows: ``Given a list of cities and the distances between
+each pair of cities, what is the shortest possible route that visits each city
+exactly once and returns to the origin city?'' \cite{flood1956}. In this
+problem, the cities are the resources and the salesman is the job.
+
+Job scheduling is NP-hard because it can be derived from the Graph Coloring
+Problem, as done in \citeA{karp1972}. The graph coloring problem is a NP-hard
+problem itself.
+
+
+\section{Reinforcement Learning}\label{sec:rl}
+
+Most \ml based schedulers are \rl based, and therefore this thesis
+focuses on reducing retraining of \rl models. The reason most \ml based
+schedulers are \rl based is because of how \rl works and differs from the other
+\ml paradigms. \rl and its differences with the other paradigms is very well
+explained in `the most popular artificial intelligence textbook in the
+world'\footnotemark, \citeA{russell2010}. Their explanation of \rl is
+summarized in the following paragraph.
+
+\footnotetext{According to
+\href{https://www.tor.com/2011/06/21/norvig-vs-chomsky-and-the-fight-for-the-future-of-ai/}{this
+blog}, but also shown on the homepage of the book
+(\url{http://aima.cs.berkeley.edu/}).}
+
+\rl is one of the basic paradigms in \ml, along with supervised
+learning and unsupervised learning. \rl is different from the other two
+paradigms. Supervised learning and unsupervised learning have a thing in
+common: the need for data. Supervised learning needs annotated data, various
+inputs and desired outputs are given and the algorithm learns a function to
+get as close to the wanted outputs as possible given the inputs. With
+unsupervised learning a model is forced to build an internal representation of
+the world by mimicking the data. The reason \rl is different is that it does
+not depend on data, but rather learns from a feedback loop of rewards or
+reinforcements. It typically consists of one or more agents, an environment, a
+set of actions and a set of states. This agent performs actions in the
+environment to reach states. An agent receives a reward for taking actions. In
+many complex environments \rl is the only feasible way to train models because
+there might be little data available or the environment is too complex to
+model \cite{russell2010}. For the reason that \rl has no need for input data
+but solely needs an environment, actions and a reward function it is widely
+used in research about using \ai in resource managers. The popularity of \rl and
+the nature of how \rl works is the reason this research is narrowed down to
+reducing retraining of \rl schedulers.
+
+
+\section{Evaluation of Reinforcement Learning Models}
+% NOTE: How can we effectively assess and compare RL based methods in job
+% scheduling?
+
+Currently there is not yet a standard evaluation method for \rl models. Due to
 the absence of a standard evaluation model, reproducibility often becomes more
 difficult. Work is done in defining standard evaluation methods, but these
 methods are not yet the industry standard. An evaluation method that is
@@ -27,18 +123,31 @@ regret per action. This is defined as the reward for the action of the optimal
 agent minus the reward for the taken action. Knowing the optimal policy is not
 always possible.
 
-There are also non-scientific metrics used to evaluate RL models. Some
-non-scientific metrics that were used to evaluate RL models are popular,
+There are also non-scientific metrics used to evaluate \rl models. Some
+non-scientific metrics that were used to evaluate \rl models are popular,
 well-defined environments like the openAI gym \cite{gym2016}. A comparison of
-RL models is done on their
+\rl models is done on their
 leaderboard\footlink{github.com/openai/gym/wiki/Leaderboard}. The used metric
 is the number of episodes it took to solve the problem. More scientific
 evaluation methodologies have been proposed, e.g. a framework for comparison
 in \citeA{khetarpal2018} and a novel evaluation method in \citeA{jordan2020}.
 
-\section{Assessing Robustness of RL}
+\section{Assessing Robustness of Reinforcement Learning}
 
 
-\note{NOTE: What are the indicators to assess robustness of RL based schedulers?}
+\note{NOTE: What are the indicators to assess robustness of \rl based
+schedulers?}
 
-\note{NOTE: What are the state-of-the-art approaches for reducing retraining time?}
+\note{NOTE: What are the state-of-the-art approaches for reducing retraining
+time?}
+
+\section{Approaches to Reduce Retraining Time}
+
+
+
+\section{Reducing Retraining of Schedulers}
+\note{Gap:} In Chapter \ref{sec:intro} multiple \rl based schedulers were
+discussed. These schedulers lack robustness: flexible environments are not
+handled well. Methods for improving robustness of \rl models exist, but are not
+yet integrated in \rl based schedulers. Integrating these methods would improve
+robustness and reduce retraining time.

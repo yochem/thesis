@@ -45,68 +45,13 @@ costs. The reason cost is reduced because resources are bought in bulk and
 maintenance costs are reduced because there are less maintainers needed.
 
 
-\section{Job Scheduling}\label{sec:scheduling}
-
-Imagine cloud systems as described in the previous section. These systems have
-many tasks, or as in this research called jobs, that need to be executed for
-it to function. Jobs are scheduled by a job scheduler or simply called the
-scheduler. These jobs vary a lot in duration time and resource-need. To
-illustrate, if the cloud environment provides a back-end for a website, a job
-could be one of the following: Serving the right HTML page to a visiting user,
-compressing user uploaded images, spam filtering, detecting anomalies in user
-logins or many other types of jobs that need to be executed to provide a fully
-functioning website. The schedulers distributes jobs over many resources,
-provided by a cloud environment. Optimally distributing the jobs is important
-for cloud environments, because efficiently using resources means there are
-less resources needed and jobs will complete in a shorter time. Thus, well
-working schedulers are important for cloud environments, because efficiently
-using resources saves money and is easier to maintain.
-
-What is efficient and how can schedulers be efficient? There are many metrics
-on which optimization can be done to make a scheduler more efficient. For
-example minimizing job slowdown time, minimizing average completion time,
-maximizing throughput (jobs per time unit) or minimizing total completion time
-(the makespan). Schedulers are created to be optimized on one or more of these
-aspects, varying the importance. Unfortunately, the optimization of schedulers
-is complex. It is a well-known problem in computer science, because of its
-NP-hardness. In the next paragraph is explained what it means to be a NP-hard
-problem and the reason that job scheduling is NP-hard.
-
-
-\subsection{NP-hard}
-
-NP-hardness is a term used in the P versus NP problem. This problem is one of
-the seven Millennium Prize Problems \cite{carlson2006} and still unsolved. The
-P versus NP problem is about computational complexity, a way of categorizing
-problems based on `how hard' they are. Computational problems have two
-complexity aspects: the complexity to solve the problem and the complexity to
-verify if the solution to the problem is correct. The question is if the
-solution to a given problem can be verified quickly (in polynomial time), is
-there an algorithm that can find the solution quickly? If this is true, P
-equals NP. Many computer scientists believe this is not the case for all
-problems \cite{rosenberger2012}. Believed is that there are problems that can
-be verified quickly but not solved quickly, which are called NP-hard problems.
-A well-known NP-hard problem is the Sudoku puzzle, especially larger ones
-\cite{yato2003}.
-
-Job scheduling is a generalized version of the traveling salesperson problem.
-The problem is as follows: ``Given a list of cities and the distances between
-each pair of cities, what is the shortest possible route that visits each city
-exactly once and returns to the origin city?'' \cite{flood1956}. In this
-problem, the cities are the resources and the salesman is the job.
-
-Job scheduling is NP-hard because it can be derived from the Graph Coloring
-Problem, as done in \citeA{karp1972}. The graph coloring problem is a
-NP-hard problem itself.
-
-
 \section{Current Situation and Improvements}\label{sec:situ}
 
 In this section current traditional (non-AI) schedulers are reviewed and
-improvements using AI techniques like reinforcement learning (RL) are
-evaluated. The problem with current AI improvements of schedulers are
+improvements using \ai techniques like \rl are
+evaluated. The problem with current \ai improvements of schedulers are
 identified and the aim of this resource is stated. The scope of this thesis is
-narrowed down to reducing retraining time of RL based schedulers in cloud
+narrowed down to reducing retraining time of \rl based schedulers in cloud
 environments. The choices made in defining the terms and scopes of this thesis
 are listed in the following paragraph.
 
@@ -118,9 +63,9 @@ Creating the resource managers is a hard and tedious task. A common aspect of
 the resource managers based on simple heuristics is the straightforwardness.
 Current cloud schedulers are developed for ease of understanding. The
 schedulers generalize, i.e. they perform the same job regardless of whether
-the workload is heavy or light \cite{mao2019}. Three classic (non-AI)
+the workload is heavy or light \cite{mao2019}. Three classic (non-\ai)
 algorithms are explained below to provide an idea of the simplicity of the
-non-AI schedulers.
+non-\ai schedulers.
 
 \begin{enumerate}
 \item First in, first out (FIFO): This algorithm treats the awaiting jobs like
@@ -133,7 +78,7 @@ non-AI schedulers.
 
 The above explained algorithms are highly intuitive resource managers and not
 fine tuned for different workloads. Due to the lack in flexibility of these
-non-AI algorithms , there are also situations in which they will perform much
+non-\ai algorithms , there are also situations in which they will perform much
 worse than other algorithms will do. For FIFO this leads to multiple jobs with
 a long duration time, blocking all other jobs till finish. The disadvantage of
 SJF is that it can cause starvation, meaning that short jobs are constantly
@@ -143,71 +88,45 @@ Currently, schedulers are not capable of handling differences in workload and
 have other shortcomings. There is a need for schedulers that are capable of
 handling increasingly complex large-scale systems, although the systems are
 currently already too complex for humans to fully understand and schedule. Due
-to the shortcomings of current non-AI implementations, previous research is
-done on implementing these resource managers using AI technology. Recent
+to the shortcomings of current non-\ai implementations, previous research is
+done on implementing these resource managers using \ai technology. Recent
 research, e.g. \citeA{mao2019, mao2016, zhang2020}, has shown that
 using deep reinforcement learning for resource management improves average job
 completion time by at least 21\% \cite{mao2019}.
 
-
-\subsection{Reinforcement Learning}
-
-The articles given as example in the previous section all use some sort of
-reinforcement learning. Most machine learning based schedulers are RL based,
-and therefore this thesis focuses on reducing retraining of RL models. RL is
-one of the basic paradigms in machine learning, along with supervised learning
-and unsupervised learning. RL is different from the other two paradigms.
-Supervised learning and unsupervised learning have a thing in common: the need
-for data. Supervised learning needs annotated data, various inputs and desired
-outputs are given and the algorithm learns a function to get as close to the
-wanted outputs as possible given the inputs. With unsupervised learning a
-model is forced to build an internal representation of the world by mimicking
-the data. The reason RL is different is that it does not depend on data, but
-rather learns from a feedback loop of rewards or reinforcements. It typically
-consists of one or more agents, an environment, a set of actions and a set of
-states. This agent performs actions in the environment to reach states. An
-agent receives a reward for taking actions. In many complex environments RL is
-the only feasible way to train models because there might be little data
-available or the environment is too complex to model. For the reason that RL
-has no need for input data but solely needs an environment, actions and a reward
-function it is widely used in research about using AI in resource managers.
-The popularity of RL and the nature of how RL works is the reason this
-research is narrowed down to reducing retraining of RL schedulers.
-
-
 \subsection{The Problem}
 
-In the previous section the problem with non-AI schedulers is identified.
-Thereafter, improvements using RL are shown, but these RL improvements also
+In the previous section the problem with non-\ai schedulers is identified.
+Thereafter, improvements using \rl are shown, but these \rl improvements also
 have their shortcomings. One of these shortcomings is flexibility. A known
-problem of machine learning algorithms is overfitting on the training
+problem of \ml algorithms is overfitting on the training
 environment and not being able to work with environmental changes. This is
-also the case with RL based schedulers. Schedulers can show undefined behavior
+also the case with \rl based schedulers. Schedulers can show undefined behavior
 when resources are added or removed. Thus, when a change in resources is done,
-the RL based schedulers need to be retrained to work in the new environment.
-Retraining is a common problem with machine learning algorithms. Retraining
+the \rl based schedulers need to be retrained to work in the new environment.
+Retraining is a common problem with \ml algorithms. Retraining
 takes time, in which a sub-optimally working scheduler is still scheduling.
 Retraining also costs computing resources itself. This costs money and
-contributes to global warming. Carbon emission of large machine learning
+contributes to global warming. Carbon emission of large \ml
 models is a real issue which is currently researched on, e.g.
-\citeA{patterson2021}. Finding ways to reduce retraining time of RL models in
+\citeA{patterson2021}. Finding ways to reduce retraining time of \rl models in
 cloud environments is important, because many schedulers can benefit from
 using these techniques. This makes cloud environments more efficient which is
 better for the company in terms of costs, efficiency and maintenance and
-better for the environment. It also contributes to more robust RL schedulers.
-If RL schedulers are more robust, more cloud companies will switch to using RL
-based schedulers in stead of the current non-AI schedulers.
+better for the environment. It also contributes to more robust \rl schedulers.
+If \rl schedulers are more robust, more cloud companies will switch to using \rl
+based schedulers in stead of the current non-\ai schedulers.
 
 The goal of this research is to integrate robustness into current
-state-of-the-art ML based resource managers. This leads to the following
+state-of-the-art \ml based resource managers. This leads to the following
 research question: How to select a method for reducing retraining time of
 reinforcement learning based resource schedulers in cloud environments? This
 will be answered by the following sub-questions:
 
 \begin{enumerate}
-    \item How can we effectively assess and compare RL based methods in job
+    \item How can we effectively assess and compare \rl based methods in job
         scheduling?
-    \item What are the indicators to assess robustness of RL based schedulers?
+    \item What are the indicators to assess robustness of \rl based schedulers?
     \item What are the state-of-the-art approaches for reducing retraining time?
 \end{enumerate}
 
@@ -219,8 +138,8 @@ flexible and
 
 \note{TODO: State the hypotheses}
 
-Firstly the state-of-the-art RL schedulers and state-of-the-art methods for
-reducing retraining time for RL algorithms are reviewed and explained. In the
+Firstly the state-of-the-art \rl schedulers and state-of-the-art methods for
+reducing retraining time for \rl algorithms are reviewed and explained. In the
 following chapter, the methodology of selecting methods is described.
 Thereafter the results of this research are shown. Lastly, a conclusion of the
 results is formed and discussed.

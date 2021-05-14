@@ -15,6 +15,7 @@
 \usepackage[bottom]{footmisc}
 \usepackage{apacite}
 \usepackage{caption}
+\usepackage[acronym]{glossaries}
 
 % todos
 \usepackage{xargs}
@@ -33,6 +34,8 @@
   urlcolor   = Aquamarine!85!black,
   colorlinks = true,
 }
+
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
 
 \definecolor{frontpage}{RGB}{42,82,103}
 
