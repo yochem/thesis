@@ -12,8 +12,10 @@ the related work is shown.
 
 Comparing different methods and models is the main task in this thesis. To
 compare methods of models, a justified way of assessing methods and models is
-needed. It is also important that the comparison is done on the indicators on
-which the performance depends. These are called the \kpis.
+required. It is also important that the comparison is done on the indicators
+on which the performance depends. These are called the \kpis. The \kpis of \rl
+based schedulers are established from literature. Comparing the robustness of
+a model is also necessary for this research.
 
 \note{unfinished}
 
@@ -75,64 +77,71 @@ problem itself.
 
 \section{Reinforcement Learning}\label{sec:rl}
 
-Most \ml based schedulers are \rl based, and therefore this thesis
-focuses on reducing retraining of \rl models. The reason most \ml based
-schedulers are \rl based is because of how \rl works and differs from the other
-\ml paradigms. \rl and its differences with the other paradigms is very well
+Most \ml based schedulers are \rl based, and therefore this thesis focuses on
+reducing retraining of \rl models. The reason most \ml based schedulers are
+\rl based is because of how \rl works and differs from the other \ml
+paradigms. \rl and its differences with the other paradigms is very well
 explained in `the most popular artificial intelligence textbook in the
 world'\footnotemark, \citeA{russell2010}. Their explanation of \rl is
-summarized in the following paragraph.
+summarized in the following section.
 
 \footnotetext{According to
 \href{https://www.tor.com/2011/06/21/norvig-vs-chomsky-and-the-fight-for-the-future-of-ai/}{this
 blog}, but also shown on the homepage of the book
 (\url{http://aima.cs.berkeley.edu/}).}
 
-\rl is one of the basic paradigms in \ml, along with supervised
-learning and unsupervised learning. \rl is different from the other two
-paradigms. Supervised learning and unsupervised learning have a thing in
-common: the need for data. Supervised learning needs annotated data, various
-inputs and desired outputs are given and the algorithm learns a function to
-get as close to the wanted outputs as possible given the inputs. With
-unsupervised learning a model is forced to build an internal representation of
-the world by mimicking the data. The reason \rl is different is that it does
-not depend on data, but rather learns from a feedback loop of rewards or
-reinforcements. It typically consists of one or more agents, an environment, a
-set of actions and a set of states. This agent performs actions in the
-environment to reach states. An agent receives a reward for taking actions. In
-many complex environments \rl is the only feasible way to train models because
-there might be little data available or the environment is too complex to
-model \cite{russell2010}. For the reason that \rl has no need for input data
-but solely needs an environment, actions and a reward function it is widely
-used in research about using \ai in resource managers. The popularity of \rl and
-the nature of how \rl works is the reason this research is narrowed down to
-reducing retraining of \rl schedulers.
+\rl is one of the basic paradigms in \ml, along with supervised learning and
+unsupervised learning. \rl is different from the other two paradigms.
+Supervised learning and unsupervised learning have a thing in common: the need
+for data. Supervised learning needs annotated data, various inputs and desired
+outputs are given and the algorithm learns a function to get as close to the
+wanted outputs as possible given the inputs. With unsupervised learning a
+model is forced to build an internal representation of the world by mimicking
+the data. The reason \rl is different is that it does not depend on data, but
+rather learns from a feedback loop of rewards or reinforcements. It typically
+consists of one or more agents, an environment, a set of actions and a set of
+states. This agent performs actions in the environment to reach states. An
+agent receives a reward for taking actions. In many complex environments \rl
+is the only feasible way to train models because there might be little data
+available or the environment is too complex to model \cite{russell2010}. For
+the reason that \rl has no need for input data but solely needs an
+environment, actions and a reward function it is widely used in research about
+using \ai in resource managers. The popularity of \rl and the nature of how
+\rl works is the reason this research is narrowed down to reducing retraining
+of \rl schedulers.
+
+\note{TODO: Describe the chosen RL algorithms? Or in method?}
 
 
 \section{Evaluation of Reinforcement Learning Models}
-% NOTE: How can we effectively assess and compare RL based methods in job
+
+% TODO: How can we effectively assess and compare RL based methods in job
 % scheduling?
 
 Currently there is not yet a standard evaluation method for \rl models. Due to
 the absence of a standard evaluation model, reproducibility often becomes more
 difficult. Work is done in defining standard evaluation methods, but these
-methods are not yet the industry standard. An evaluation method that is
-currently used is regret. Regret can only be used as a metric when an agent
-with optimal policy can be defined. The difference in actions taken is the
-regret per action. This is defined as the reward for the action of the optimal
-agent minus the reward for the taken action. Knowing the optimal policy is not
-always possible.
-
-There are also non-scientific metrics used to evaluate \rl models. Some
-non-scientific metrics that were used to evaluate \rl models are popular,
-well-defined environments like the openAI gym \cite{gym2016}. A comparison of
-\rl models is done on their
+methods are not yet the industry standard. Three metrics were found. The first
+evaluation is regret. Regret can only be used as a metric when an agent with
+optimal policy can be defined. The difference in actions taken is the regret
+per action. This is defined as the reward for the action of the optimal agent
+minus the reward for the taken action. Knowing the optimal policy is not
+always possible. The second evaluation metric is not used literature but
+rather in practice. Some non-scientific metrics that were used to evaluate \rl
+models are popular, well-defined environments like the openAI gym
+\cite{gym2016}. A comparison of \rl models is done on their
 leaderboard\footlink{github.com/openai/gym/wiki/Leaderboard}. The used metric
-is the number of episodes it took to solve the problem. More scientific
-evaluation methodologies have been proposed, e.g. a framework for comparison
-in \citeA{khetarpal2018} and a novel evaluation method in \citeA{jordan2020}.
+is the number of episodes it took to solve the problem. Lastly, proposed
+methods in literature are for example a framework for evaluating \rl in
+\citeA{khetarpal2018} and a novel evaluation method in \citeA{jordan2020}.
+
 
 \section{Assessing Robustness of Reinforcement Learning}
+
+It is important to use an accurate metric when determining the robustness of \rl
+based schedulers. Numerous methods for adding in robustness are proposed, for
+example adding ``disturbance'' to the training environment
+\cite{morimoto2005}.
 
 
 \note{NOTE: What are the indicators to assess robustness of \rl based
@@ -143,11 +152,17 @@ time?}
 
 \section{Approaches to Reduce Retraining Time}
 
+\subsection{Meta Reinforcement Learning}
+
+\subsection{Transfer Learning}
+
+\subsection{Deep Q-Learning}
 
 
-\section{Reducing Retraining of Schedulers}
-\note{Gap:} In Chapter \ref{sec:intro} multiple \rl based schedulers were
-discussed. These schedulers lack robustness: flexible environments are not
-handled well. Methods for improving robustness of \rl models exist, but are not
-yet integrated in \rl based schedulers. Integrating these methods would improve
-robustness and reduce retraining time.
+
+\section{Reducing Retraining of Schedulers} \note{Gap:} In Chapter
+\ref{sec:intro} multiple \rl based schedulers were discussed. These schedulers
+lack robustness: flexible environments are not handled well. Methods for
+improving robustness of \rl models exist, but are not yet integrated in \rl
+based schedulers. Integrating these methods would improve robustness and
+reduce retraining time.
