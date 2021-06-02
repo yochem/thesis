@@ -44,6 +44,63 @@ resources. This reduces the cost of the resources, but also the maintenance
 costs. The reason cost is reduced because resources are bought in bulk and
 maintenance costs are reduced because there are less maintainers needed.
 
+\section{Job Scheduling}\label{sec:scheduling}
+
+Imagine cloud systems as described in Section \ref{sec:cloud}. These systems
+have many tasks, or as in this thesis called jobs, that need to be executed
+for it to function. Jobs are scheduled by a job scheduler or simply called the
+scheduler. These jobs vary a lot in duration time and resource-need. To
+illustrate, if the cloud environment provides a back-end for a website, a job
+could be one of the following: Serving the right HTML page to a visiting user,
+compressing user uploaded images, spam filtering, detecting anomalies in user
+logins or many other types of jobs that need to be executed to provide a fully
+functioning website. The schedulers distributes jobs over many resources,
+provided by a cloud environment. Optimally distributing the jobs is important
+for cloud environments, because efficiently using resources means there are
+less resources needed and jobs will complete in a shorter time. Thus, well
+working schedulers are important for cloud environments, because efficiently
+using resources saves money and is easier to maintain.
+
+What is efficient and how can schedulers be efficient? There are many metrics
+on which optimization can be done to make a scheduler more efficient. For
+example minimizing job slowdown time, minimizing average completion time,
+maximizing throughput (jobs per time unit) or minimizing total completion time
+(the makespan). Schedulers are created to be optimized on one or more of these
+aspects, varying the importance. Unfortunately, the optimization of schedulers
+is complex. It is a well-known problem in computer science, because of its
+NP-hardness. In the next paragraph is explained what it means to be a NP-hard
+problem and the reason that job scheduling is NP-hard.
+
+
+\subsection{NP-Hard}
+
+NP-hardness is a term used in the P versus NP problem. This problem is one of
+the seven Millennium Prize Problems \cite{carlson2006} and still unsolved. The
+P versus NP problem is about computational complexity, a way of categorizing
+problems based on `how hard' they are. Computational problems have two
+complexity aspects: the complexity to solve the problem and the complexity to
+verify if the solution to the problem is correct. The question is if the
+solution to a given problem can be verified quickly (in polynomial time), is
+there an algorithm that can find the solution quickly? Problems that can be
+\emph{solved} in polynomial time are in the P class. Problems that can be
+\emph{verified} in polynomial time are in the NP (nondeterministic polynomial
+time) class. If these classes fully overlap, i.e. every problem in P is also
+in NP and every problem in NP is also in P, then P equals NP. Many computer
+scientists believe this is not the case for all problems
+\cite{rosenberger2012}. Believed is that there are problems that can be
+verified quickly but not solved quickly, which are called NP-hard problems. A
+well-known NP-hard problem is the Sudoku puzzle, especially larger ones
+\cite{yato2003}.
+
+Job scheduling is a generalized version of the traveling salesperson problem.
+The problem is as follows: ``Given a list of cities and the distances between
+each pair of cities, what is the shortest possible route that visits each city
+exactly once and returns to the origin city?'' \cite{flood1956}. In this
+problem, the cities are the resources and the salesman is the job.
+
+Job scheduling is NP-hard because it can be derived from the Graph Coloring
+Problem, as done in \citeA{karp1972}. The graph coloring problem is a NP-hard
+problem itself.
 
 \section{Current Situation and Improvements}\label{sec:situ}
 
@@ -73,7 +130,7 @@ non-\ai schedulers.
     are available for the next job.
 \item Shortest Job First (SJF): This algorithm sorts awaiting jobs based on
     increasing order of completion time.
-\item Tetris: ? \note{hier tetris}
+\item Tetris: ?
 \end{enumerate}
 
 The above explained algorithms are highly intuitive resource managers and not
@@ -99,23 +156,24 @@ completion time by at least 21\% \cite{mao2019}.
 In the previous section the problem with non-\ai schedulers is identified.
 Thereafter, improvements using \rl are shown, but these \rl improvements also
 have their shortcomings. One of these shortcomings is flexibility. A known
-problem of \ml algorithms is overfitting on the training
-environment and not being able to work with environmental changes. This is
-also the case with \rl based schedulers. Schedulers can show undefined behavior
-when resources are added or removed. Thus, when a change in resources is done,
-the \rl based schedulers need to be retrained to work in the new environment.
-Retraining is a common problem with \ml algorithms. Retraining
-takes time, in which a sub-optimally working scheduler is still scheduling.
-Retraining also costs computing resources itself. This costs money and
-contributes to global warming. Carbon emission of large \ml
-models is a real issue which is currently researched on, e.g.
-\citeA{patterson2021}. Finding ways to reduce retraining time of \rl models in
-cloud environments is important, because many schedulers can benefit from
-using these techniques. This makes cloud environments more efficient which is
-better for the company in terms of costs, efficiency and maintenance and
-better for the environment. It also contributes to more robust \rl schedulers.
-If \rl schedulers are more robust, more cloud companies will switch to using \rl
-based schedulers in stead of the current non-\ai schedulers.
+problem of \ml algorithms is overfitting on the training environment and not
+being able to work with environmental changes. This is also the case with \rl
+based schedulers. Schedulers can show undefined behavior when resources are
+added or removed. Thus, when a change in resources is done, the \rl based
+schedulers need to be retrained to work in the new environment. Retraining is
+a common problem with \ml algorithms. Retraining takes time, in which a
+sub-optimally working scheduler is still scheduling. Retraining also costs
+computing resources itself. This costs money and contributes to global
+warming. Carbon emission of large \ml models is a real issue which is
+currently researched on, e.g. \citeA{patterson2021}. Lastly, having enough
+data available to cover all perturbations is not feasible. Finding ways to
+reduce retraining time of \rl models in cloud environments is important,
+because many schedulers can benefit from using these techniques. This makes
+cloud environments more efficient which is better for the company in terms of
+costs, efficiency and maintenance and better for the environment. It also
+contributes to more robust \rl schedulers. If \rl schedulers are more robust,
+more cloud companies will switch to using \rl based schedulers in stead of the
+current non-\ai schedulers.
 
 The goal of this research is to integrate robustness into current
 state-of-the-art \ml based resource managers. This leads to the following
@@ -130,13 +188,9 @@ will be answered by the following sub-questions:
     \item What are the state-of-the-art approaches for reducing retraining time?
 \end{enumerate}
 
-\note{state the research aims and/or research objectives}
-
 The goal of this research is to provide a method for selecting methods that
 reduce retraining time. By reducing retraining time the models become more
 flexible and
-
-\note{TODO: State the hypotheses}
 
 Firstly the state-of-the-art \rl schedulers and state-of-the-art methods for
 reducing retraining time for \rl algorithms are reviewed and explained. In the

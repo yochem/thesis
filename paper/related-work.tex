@@ -1,78 +1,26 @@
 \chapter{Related Work}
 
-In this chapter related work is discussed. In the first section the scope of
-the thesis is defined and the methodology of finding related work is
-described. Thereafter related work on the topics of job scheduling and its
-NP-hardness, \rl based schedulers, assessing robustness of \rl methods and
-approaches for reducing retraining time is discussed. Finally, the gap of in
-the related work is shown.
+In this chapter related work is discussed. In Section \ref{sec:scope} the
+scope of the thesis is defined and the methodology of finding related work is
+described. Thereafter related work on the topics of \rl based schedulers,
+assessing robustness of \rl methods and approaches for reducing retraining
+time is discussed. Lastly, the gap of in the related work is analyzed.
 
 
-\section{Scope and Methodology}
+\section{Scope and Methodology}\label{sec:scope}
+
+The scope of this thesis is specifically \rl based schedulers in cloud
+environments. In Section \ref{sec:rl} is explained why this thesis only
+focusesses on \rl based schedulers, not schedulers based on other forms of
+\ml.
 
 Comparing different methods and models is the main task in this thesis. To
 compare methods of models, a justified way of assessing methods and models is
 required. It is also important that the comparison is done on the indicators
 on which the performance depends. These are called the \kpis. The \kpis of \rl
-based schedulers are established from literature. Comparing the robustness of
-a model is also necessary for this research.
-
-\note{unfinished}
-
-
-\section{Job Scheduling}\label{sec:scheduling}
-
-Imagine cloud systems as described in Section \ref{sec:cloud}. These systems
-have many tasks, or as in this thesis called jobs, that need to be executed
-for it to function. Jobs are scheduled by a job scheduler or simply called the
-scheduler. These jobs vary a lot in duration time and resource-need. To
-illustrate, if the cloud environment provides a back-end for a website, a job
-could be one of the following: Serving the right HTML page to a visiting user,
-compressing user uploaded images, spam filtering, detecting anomalies in user
-logins or many other types of jobs that need to be executed to provide a fully
-functioning website. The schedulers distributes jobs over many resources,
-provided by a cloud environment. Optimally distributing the jobs is important
-for cloud environments, because efficiently using resources means there are
-less resources needed and jobs will complete in a shorter time. Thus, well
-working schedulers are important for cloud environments, because efficiently
-using resources saves money and is easier to maintain.
-
-What is efficient and how can schedulers be efficient? There are many metrics
-on which optimization can be done to make a scheduler more efficient. For
-example minimizing job slowdown time, minimizing average completion time,
-maximizing throughput (jobs per time unit) or minimizing total completion time
-(the makespan). Schedulers are created to be optimized on one or more of these
-aspects, varying the importance. Unfortunately, the optimization of schedulers
-is complex. It is a well-known problem in computer science, because of its
-NP-hardness. In the next paragraph is explained what it means to be a NP-hard
-problem and the reason that job scheduling is NP-hard.
-
-
-\subsection{NP-Hard}
-
-NP-hardness is a term used in the P versus NP problem. This problem is one of
-the seven Millennium Prize Problems \cite{carlson2006} and still unsolved. The
-P versus NP problem is about computational complexity, a way of categorizing
-problems based on `how hard' they are. Computational problems have two
-complexity aspects: the complexity to solve the problem and the complexity to
-verify if the solution to the problem is correct. The question is if the
-solution to a given problem can be verified quickly (in polynomial time), is
-there an algorithm that can find the solution quickly? If this is true, P
-equals NP. Many computer scientists believe this is not the case for all
-problems \cite{rosenberger2012}. Believed is that there are problems that can
-be verified quickly but not solved quickly, which are called NP-hard problems.
-A well-known NP-hard problem is the Sudoku puzzle, especially larger ones
-\cite{yato2003}.
-
-Job scheduling is a generalized version of the traveling salesperson problem.
-The problem is as follows: ``Given a list of cities and the distances between
-each pair of cities, what is the shortest possible route that visits each city
-exactly once and returns to the origin city?'' \cite{flood1956}. In this
-problem, the cities are the resources and the salesman is the job.
-
-Job scheduling is NP-hard because it can be derived from the Graph Coloring
-Problem, as done in \citeA{karp1972}. The graph coloring problem is a NP-hard
-problem itself.
+based schedulers are established from literature. Assessing the robustness of
+a model is also necessary for this research. By assessing robustness, a way to
+select a method for reducing retraining time can be selected.
 
 
 \section{Reinforcement Learning}\label{sec:rl}
@@ -80,38 +28,67 @@ problem itself.
 Most \ml based schedulers are \rl based, and therefore this thesis focuses on
 reducing retraining of \rl models. The reason most \ml based schedulers are
 \rl based is because of how \rl works and differs from the other \ml
-paradigms. \rl and its differences with the other paradigms is very well
+paradigms. \rl and its differences with the other paradigms are very well
 explained in `the most popular artificial intelligence textbook in the
 world'\footnotemark, \citeA{russell2010}. Their explanation of \rl is
-summarized in the following section.
+summarized in the following paragraph.
 
 \footnotetext{According to
 \href{https://www.tor.com/2011/06/21/norvig-vs-chomsky-and-the-fight-for-the-future-of-ai/}{this
 blog}, but also shown on the homepage of the book
 (\url{http://aima.cs.berkeley.edu/}).}
 
-\rl is one of the basic paradigms in \ml, along with supervised learning and
-unsupervised learning. \rl is different from the other two paradigms.
-Supervised learning and unsupervised learning have a thing in common: the need
-for data. Supervised learning needs annotated data, various inputs and desired
-outputs are given and the algorithm learns a function to get as close to the
-wanted outputs as possible given the inputs. With unsupervised learning a
-model is forced to build an internal representation of the world by mimicking
-the data. The reason \rl is different is that it does not depend on data, but
-rather learns from a feedback loop of rewards or reinforcements. It typically
-consists of one or more agents, an environment, a set of actions and a set of
-states. This agent performs actions in the environment to reach states. An
-agent receives a reward for taking actions. In many complex environments \rl
-is the only feasible way to train models because there might be little data
-available or the environment is too complex to model \cite{russell2010}. For
-the reason that \rl has no need for input data but solely needs an
-environment, actions and a reward function it is widely used in research about
-using \ai in resource managers. The popularity of \rl and the nature of how
-\rl works is the reason this research is narrowed down to reducing retraining
-of \rl schedulers.
 
-\note{TODO: Describe the chosen RL algorithms? Or in method?}
+\subsection{Why Reinforcement Learning for Schedulers?}
 
+Reinforcement learning is one of the three basic paradigms in machine
+learning, along with supervised learning and unsupervised learning. \rl is
+different from the other two paradigms. Supervised learning and unsupervised
+learning have a thing in common: the need for data. Supervised learning needs
+annotated data, various inputs and desired outputs are given and the algorithm
+learns a function to get as close to the wanted outputs as possible given the
+inputs. With unsupervised learning a model is forced to build an internal
+representation of the world by mimicking the data. The reason \rl is different
+is that it does not depend on data, but rather learns from a feedback loop of
+rewards or reinforcements. It typically consists of one or more agents, a set
+of actions $A$ and a set of states $S$. This agent performs an action $a \in
+A$ to a perform state transition. This action leads to a reward. In many
+complex environments \rl is the only feasible way to train models because
+there might be little data available or the environment is too complex to
+model \cite{russell2010}. For the reason that \rl has no need for input data
+but solely needs an environment, actions and a reward function it is widely
+used in research about using \ai in resource managers. The popularity of \rl
+and the nature of how \rl works is the reason this research is narrowed down
+to reducing retraining of \rl schedulers.
+
+
+\subsection{Reinforcement Learning Based Schedulers}
+
+Many reinforcement learning algorithms are used in state-of-the-art \rl
+based schedulers. Three different state-of-the-art \rl schedulers are
+described in this section.
+
+% Reinforcement learning algorithms can be categorized in two
+% categories: model-based and model-free. Model-based \rl algorithms create a
+% model of the environment, which model-free \rl algorithms do not. Both have
+% advantages and disadvantages, depending on the environment.
+
+The first state-of-the-art \rl based scheduler is DeepRM, presented in
+\citeA{mao2016}. This scheduler is based on deep reinforcement learning with
+policy representation via a \dnn. The algorithm learns by performing
+gradient-descent on the policy parameters using the REINFORCE algorithm from
+\citeA{sutton1999}. For the state representation a 2-D image is used to
+capture the status of resources and jobs. The second state-of-the-art
+scheduler is proposed in \citeA{zhang2020} and also trains a policy network,
+but in this algorithm the network is trained using \ppo, an actor-critic
+algorithm. Unlike DeepRM, the model from \citeA{zhang2020} is not hard bounded
+by the instance size \cite[p.~5]{zhang2020}. Because it is not hard bounded by
+the instance size it is more flexible and robust.
+
+
+% - ?Graph Neural Networks.?
+
+% - deep Q learning (free)
 
 \section{Evaluation of Reinforcement Learning Models}
 
@@ -138,31 +115,148 @@ methods in literature are for example a framework for evaluating \rl in
 
 \section{Assessing Robustness of Reinforcement Learning}
 
-It is important to use an accurate metric when determining the robustness of \rl
-based schedulers. Numerous methods for adding in robustness are proposed, for
-example adding ``disturbance'' to the training environment
-\cite{morimoto2005}.
+If a \rl model is robust, it has the ability to cope with dynamic environments
+and works well in noisy environments. The goal of this thesis is to compare
+methods for reducing the retraining time of \rl based schedulers. If a model
+is robust, it can handle the dynamics of the environment and will most likely
+not need much retraining time. Thus, making the \rl scheduler more robust will
+most likely result in less retraining time. This is why related work on robust
+reinforcement learning algorithms is discussed. The comparison between
+robustness of reinforcement learning models is only as descriptive as the
+metric used for it. This is way selecting a well-formed method for assessing
+robustness is important for this research.
+
+Many methods for assessing robustness of reinforcement learning use some kind
+of ``disturbance'' in the training environment \cite{morimoto2005}. By
+changing dynamic aspects of the environment, the model learns about the
+dynamics and accounts for this.
 
 
-\note{NOTE: What are the indicators to assess robustness of \rl based
-schedulers?}
-
-\note{NOTE: What are the state-of-the-art approaches for reducing retraining
-time?}
-
-\section{Approaches to Reduce Retraining Time}
-
-\subsection{Meta Reinforcement Learning}
-
-\subsection{Transfer Learning}
-
-\subsection{Deep Q-Learning}
+In \citeA{alnima2021} the neuron coverage, i.e. the ratio of the activated
+neurons in a network, is used a measurement of robustness. This is only
+applicable in \rl methods with neural networks in it, for example \dqn.
 
 
+% todo: link pinto as example for open AI testing
 
-\section{Reducing Retraining of Schedulers} \note{Gap:} In Chapter
-\ref{sec:intro} multiple \rl based schedulers were discussed. These schedulers
-lack robustness: flexible environments are not handled well. Methods for
-improving robustness of \rl models exist, but are not yet integrated in \rl
-based schedulers. Integrating these methods would improve robustness and
-reduce retraining time.
+
+\section{Approaches to Reduce Retraining Time}\label{sec:reduce}
+
+Reducing retraining time of reinforcement learning models is an important
+task. By doing this, reinforcement learning models get more robust
+and can be used in more flexible environments. This allows using reinforcement
+learning as solution for problems which were too flexible for previous
+\rl models. Reducing retraining time also has a cost efficient motivation;
+less retraining time means less resources-heavy training with high energy
+costs. In this section the current state-of-the-art approaches are discussed.
+The approaches are categorized in three categories: (1) approaches modelling
+the dynamic aspect of the environment, (2) approaches using adversarial agents
+and (3) approaches that reduce retraining by using earlier learned policies.
+The reviewed approaches to reduce retraining time are discussed on category
+basis in the following subsections.
+
+
+\subsection{Modelling the Dynamic Environment}\label{sec:model}
+
+Modelling the dynamics of the environment is a straightforward approach to
+taking account of the dynamics. For example, in job schedulers in cloud
+environments, this can be done by adding and removing resources during
+training. It would theoretically be possible for a model to learn that a
+change in resources is possible and take that in account. Numerous approaches
+include information about the dynamic aspect of the environment into the
+model. To successfully apply \rl models in dynamic environments,
+\citeA{wiering2001} proposed to include an a-priori model of the changing
+parts in the environment. In \citeA{nagayoshi2013}, a method was proposed for
+detecting environmental changes on which the model can adapt. The
+aforementioned proposed methods require a model of the environment or a-priori
+knowledge of the changing parts of the environment. In many environments, this
+would not be feasible, but it could be possible in job scheduling since the
+only changing element of the environment is the number of resources. The
+disadvantage of modelling the dynamic environment beforehand is that it might
+not be possible due to the randomness of the changes in resources. The outage
+of a resource can probably be predicted when some information on the current
+state of the resource is provided, but predicting the outage of a resource is
+out of the scope of this thesis.
+
+
+\subsection{Adversarial Agents}\label{sec:adversarial}
+
+Another approach for learning how to handle disturbance is by adding in a
+disturbing agent \cite{morimoto2005}. This agent learns to perform the most
+disturbing action as possible. The same approach is also proposed in
+\citeA{pinto2017}, therein called robust adversarial reinforcement learning.
+In \citeA{pinto2017} it is also stated that the gap between simulation and
+real world is too large for policy-learning approaches to work well. This
+might be achievable if the adversarial agent can control when specific
+resources inserted or deleted. This raises a number of questions. How would
+the amount of operations (insertion and deletions of resources) be selected?
+This has to be controlled, otherwise the adversarial agent would score best by
+deleting all resources. Will the agent work better than training with random
+resource operations? Are there critical moments where the deletion of
+resources is worse than other moments?
+
+Implementing an adversarial agent can be done with Q-learning models.
+\Ql is a model typically used in single agent environments and is of simple
+nature. Having two Q-learning agents in an environment, one learning the main
+task and the other one being the adversarial agent can improve robustness.
+This technique have been used in a simple two player game \cite{littman1994}.
+There are also other approaches for reducing retraining time of \ql models in
+specific. These approaches include repeated update Q-learning
+\cite{abdallah2016} and variants of \dqn like robust \dqn \cite{chen2018}.
+
+Another approach is to train robustness online, i.e. during deployment of the
+model \cite{fisher2019}. This approach, called Robust Student-\dqn (RS-\dqn)
+deploys adversarial agents online to trick the model into unwanted states.
+This approach maintains competitive performance.
+
+
+\subsection{Reusing Knowledge}\label{sec:reusing}
+
+Meta reinforcement learning is a method for for learning to quickly adapt
+online to new tasks. This is done in the context of model-based reinforcement
+learning. Meta reinforcement learning models use meta-learning to train a
+dynamics model that can be rapidly adapted to local context
+\cite{nagabandi2019}. Meta learning is described as ``Learning to learn''. A
+model trains to learn during meta-training. Here, the learner learns the new
+task and the meta-learner trains the learner. In \cite{schweighofer2003} it is
+proposed to learn meta-parameters with stochastic gradients. It is a robust
+algorithm that finds appropriate meta-parameters and controls the parameters
+in a dynamic, adaptive manner. Even when retraining is needed to adapt to the
+changes in environment, the parameters of the model will probably be nearly
+the same as before.
+
+
+\section{Gap Analysis}
+
+As shown in this chapter, much work is done in combining job scheduling and
+reinforcement learning. There is also research done in reducing the retraining
+time of reinforcement learning models and making these models more robust. In
+this section the gap is identified and analyzed.
+
+In Section \ref{sec:intro} multiple \rl based schedulers were discussed. These
+schedulers lack robustness: flexible environments are not handled well. As
+shown in Section \ref{sec:reduce} methods for improving robustness of \rl
+models exist, but are not yet integrated in \rl based schedulers. Integrating
+these methods would improve robustness and reduce retraining time.
+
+There also is not a standard collection of indicators to assess robustness of
+\rl based schedulers. A standard collection of robustness indicators
+simplifies comparing \rl based schedulers and method for reducing retraining
+time of of the schedulers.
+
+
+
+
+% gap: methods for reducing require knowledge of environment?
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
