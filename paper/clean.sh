@@ -7,6 +7,7 @@ extensions=(
     aux
     bbl
     blg
+    dvi
     fdb_latexmk
     fls
     glg

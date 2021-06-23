@@ -1,0 +1,173 @@
+\chapter{Method}
+
+% TODO: multiple models -> specify how many TODO: needs review + adding more
+
+In this chapter the methodology of this thesis is described. In this thesis
+approaches to reduce retraining time of \rl based schedulers are compared. The
+approaches are compared against multiple \rl based schedulers. This is done to
+see how well the approaches work on different \rl algorithms. Firstly the
+software and hardware for the experiments is described (§\ref{sec:setup}).
+Secondly the data and its usage is described in Section \ref{sec:data}.
+
+% TODO: komt dit erna?
+
+To get the results needed for answering the research questions we first
+compare performance of the \rl based schedulers in question
+(§\ref{sec:models}), then we integrate the approaches for reducing retraining
+time or robustness (§\ref{sec:integrating-robustness}) and at last we evaluate
+the robustness and duration of retraining time of these approaches on all \rl
+algorithms (§\ref{sec:eval}).
+
+
+\section{Hardware and Software Specification}\label{sec:setup}
+
+This section explains the hardware and software setup and configuration used
+for the research. First the hardware used is described and after this some
+important software and its usage is described. The experiments were run on
+workstation 8 provided by the Robotics Lab at the University of Amsterdam.
+Workstation 8 is an Alienware Aurora R9 1.0.4. The CPU is an Intel i9-9900 (16
+threads) running at 5.000 GHz and the GPU is a NVidia 2080 Ti (11 GB) with
+CUDA 10 and driver 415. The operating system is Ubuntu 18.04.4. All algorithms
+were implemented in the Python programming language\footlink{python.org}. To
+prevent versioning issues between dependencies, a virtual Python environment
+was created for every algorithm. This also allowed us to run a different
+Python version per algorithm. The tool used for creating and managing virtual
+Python environments is called \code{pyenv}\footlink{github.com/pyenv/pyenv}.
+An example of setting up a virtual environment:
+
+\begin{verbatim} $ pyenv install 3.7.10 $ pyenv virtualenv 3.7.10 meta-rl $
+pyenv activate \end{verbatim}
+
+The above commands install Python 3.7.10, create a virtual environment called
+`meta-rl' that uses Python version 3.7.10 and activates this virtual
+environment. From then on, packages could be installed using the Python
+package installer \code{pip} and can only be used in the `meta-rl'
+environment. Standard practice is to include a \code{requirements.txt} file in
+the root directory of your project. However, only some of the projects used in
+this thesis included it. Installing the needed packages at the right version
+is as simple as running the command \code{pip install -r requirements.txt}.
+
+Some packages are almost always used when writing \ai software in Python.
+These packages are NumPy, Scipy, Keras, Tensorflow or PyTorch\footnotemark.
+NumPy and SciPy provide an API for scientific computing and most importantly a
+solid multidimensional array object. The other three provide a back-end for
+creating well optimized \ml algorithms, especially for neural networks.
+Another software project used extensively with this thesis is the OpenAI Gym
+\cite{gym2016}. Gym is a for developing and comparing reinforcement learning
+algorithms. It mostly provides access to many simple environments to develop
+your \rl algorithm on, or as their slogan says ``We provide the environment;
+you provide the algorithm.''\footlink{gym.openai.com}.
+
+\footnotetext{Their respective home pages: \link{numpy.org}, \link{scipy.org},
+\link{keras.io}, \link{tensorflow.org} and \link{pytorch.org}.}
+
+
+\section{Data}\label{sec:data}
+
+Four datasets were provided by the supervisors at the start of the thesis. The
+datasets described transfered messages in intervals of one or ten minutes. The
+four datasets provided 43,200, 182,283, 4,320 and 28,312 rows of data, which
+sums up to 258,118 rows of data in total. The datasets all had five columns:
+the start time, the transfer time, request number, byte count and completion
+status. An overview of the datasets is provided in Table \ref{table:data}.
+
+\input{./fig/table-data.tex}
+
+The data was complete, i.e. it had zero missing values. Not having missing
+values does not mean the data is clean. The dataset contained 3 rows where the
+transfer time, request id and byte count had the value of 0. The 3 rows were
+dropped because it lead to problems during the conversion of the data into
+another format. Another quirk to take note of is that even though the column
+name `request ID' would suggest its values will be IDs and thus unique, this
+is not the case. For example, there are 1,576 unique IDs in the 4,320 rows of
+of the \code{mts\_june\_10m.csv} file. All counts of unique IDs and rows are
+shown in Table \ref{table:files}. The commands for getting this data can be
+found in appendix \ref{app:dataset}.
+
+\input{./fig/table-files.tex}
+
+
+The provided dataset was not compatible with most models. This is first of all
+because it is not a \jss dataset. The data are incoming requests from many
+Internet of Things-like devices. The data is sequential and are not different
+jobs that need to be scheduled. It is possible to convert the original data to
+formats that are more used in \jss tasks. The first format in which the data
+was converted was a \DAG. Following the example of the provided data by the
+model that uses \DAG data\footnotemark, our provided sequential data was
+converted to a \DAG using DAGGEN\footlink{github.com/frs69wq/daggen}. DAGGEN
+is a command line tool that generates a \DAG usable by scheduling algorithms.
+It has a number of parameters; \code{n} ($n$) is the number of nodes,
+\code{mindata} ($D_{min}$) is the minimum size of processed data,
+\code{maxdata} ($D_{max}$) is the maximum size of processed data,
+\code{density} ($d$) determines the numbers of dependencies between tasks,
+\code{ccr} ($ccr$) the communication to computation ratio and \code{fat}
+($fat$) the width of the \DAG, i.e. the maximum number of tasks that can be
+executed concurrently. Because our provided data was originally not \jss data,
+the converted data used parameters and other aspects from the example data. In
+the example data, all $n$ values were in the range of 1 to 50. The $n$ values
+were determined by our byte count value, which was scaled to be in $[1, 50]$.
+Ten outliers were removed to get the mean $n$ closer to the example mean $n$.
+The $D_{min}$ and $D_{max}$ were generated from the transfer time values. The
+other three parameters, $d$, $ccr$, and $fat$, were randomly chosen. The
+distribution of these random values followed the distribution of the parameter
+values found in the example data. For $d$ this was an uniform distribution
+$[4, 10]$, for $ccr$ it was an uniform distribution in $[3, 6]$ and for $fat$
+it was an uniform distribution in $[4, 9]$. There was one other parameter, the
+regularity, which was always $0.5$ in the example graphs. An example of a
+generated DAGGEN command is the following: \code{daggen -{}-dot -n 4
+-{}-mindata 2656 -{}-maxdata 2658 -{}-density 0.4 -{}-ccr 0.5 -{}-fat 0.6
+-{}-regular 0.5 -o graphs/4-2657.gv}. The generated graph file from this
+command is shown in Fig. \ref{fig:dag}. It can be seen in Fig. \ref{fig:dag}
+that the tasks on the lines without an arrow (\code{->}) contain an attribute
+\code{expect\_size}. This can not be added with the DAGGEN tool and is
+probably added by the authors of the model that uses this data. We noticed
+that the expected size is 2.00, 2.50, or 3.33 times smaller than the size
+attribute of that task. The distribution was almost uniform: 16500 times a
+factor of 2, 16820 times a factor of 2.50, and 16680 times a factor of 3.33.
+The expected size was thereafter integrated using the factors as mentioned
+above.
+
+\footnotetext{The model called metaRL-offloading uses DAG data. The example
+data can be found here: \urlmetadata.}
+
+\input{./fig/dag.tex}
+
+Other models worked with the popular OpenAI Gym environment. The Gym
+environment allows people to build their own environment to make it possible
+to test \rl algorithms in other kinds of environments. Gym itself mostly
+provides game-like environments. The interface for Gym is very minimal, as
+typical \rl algorithms have simple interaction with the environment. Most
+importantly, it exposes the following methods and attributes:
+\code{env.reset()} which resets the environment and returns the start state,
+\code{env.observation\_space} which resembles the current state,
+\code{env.action\_space} which are all possible actions in the current state,
+and \code{env.step(action)} which performs an action and returns the new
+state, a reward for the action and if the model is done.
+
+In \citeA{tassel2021} a gym environment for simulating the job shop scheduling
+problem is proposed. This environment provides the bridge between instances
+specified in the Taillard specification and the Gym interface. The Taillard
+specification, proposed in \citeA{taillard1993}, is a specification for
+computing instances. It specifies the number of machines and jobs and
+processing time per job for all machines. An example for an instance with one
+job and three machines. The machines are numbered from 0 to 2 and the
+processing time of the job is respectively 5, 8 and 9. The visiting order is
+1, 2, 0. The representation of this instance is shown in Fig.
+\ref{fig:taillard}. As can be seen, first the number of jobs and the number of
+machines and then one job per line, with the visiting order and their
+processing time. To apply the provided sequential data to this format, we
+first analyzed the existing instances. In the instances provided by
+\citeA{tassel2021} there were 40 or 45
+machines
+
+\input{./fig/taillard.tex}
+
+
+% \section{Selection of Models}\label{sec:models}
+
+% \section{Training the Models}\label{sec:train}
+
+% \section{Integrating Approaches for
+% Robustness}\label{sec:integrating-robustness}
+
+% \section{Evaluation}\label{sec:eval}

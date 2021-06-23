@@ -16,6 +16,8 @@
 \usepackage{apacite}
 \usepackage{caption}
 \usepackage[acronym]{glossaries}
+\usepackage{soul}
+\usepackage{fancyvrb}
 
 % todos
 \usepackage{xargs}
@@ -34,19 +36,22 @@
 %   urlcolor   = Aquamarine!85!black,
 %   colorlinks = true,
 % }
+\definecolor{linkcolor}{HTML}{2a55ab}
+\definecolor{frontpage}{RGB}{42,82,103}
 
 \hypersetup{
   linkcolor  = black,
   citecolor  = black,
-  urlcolor   = black,
+  urlcolor   = linkcolor,
   colorlinks = true,
 }
 
+\captionsetup{width=.9\textwidth}
+
 \renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
-
-\definecolor{frontpage}{RGB}{42,82,103}
-
 \newcommand{\footlink}[1]{\footnote{\href{https://#1}{#1}}}
+\newcommand{\link}[1]{\href{https://#1}{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
 
 % [CHANGE] The title of your thesis. If your thesis has a subtitle, then this
 % should appear right below the main title, in a smaller font.
@@ -65,3 +70,6 @@ Science Park 904\\
 1098 XH Amsterdam
 }
 \newcommand{\theDate}{June 25, 2021}
+
+\newcommand{\urltor}{https://www.tor.com/2011/06/21/norvig-vs-chomsky-and-the-fight-for-the-future-of-ai/}
+\newcommand{\urlmetadata}{\href{https://github.com/linkpark/metarl-offloading/tree/master/env/mec_offloaing_envs/data}{github.com/linkpark/metarl-offloading}}

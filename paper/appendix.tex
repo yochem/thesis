@@ -1,0 +1,31 @@
+\appendix
+
+\chapter{Dataset Analysis}\label{app:dataset}
+
+These are the bash commands used for the data analysis in Table
+\ref{table:files}.\\
+
+\noindent Number of rows:
+\begin{verbatim}
+$ sed 1d mts_june_10m.csv | wc -l
+$ sed 1d mts_june_10m_rh.csv | wc -l
+$ sed 1d mts_june_1m.csv | wc -l
+$ sed 1d mts_june_1m_rh.csv | wc -l
+\end{verbatim}
+
+
+\noindent Number of unique request IDs:
+\begin{verbatim}
+$ sed 1d mts_june_10m.csv | cut -d',' -f 3 | sort -h | uniq | wc -l
+$ sed 1d mts_june_10m_rh.csv | cut -d',' -f 4 | sort -h | uniq | wc -l
+$ sed 1d mts_june_1m.csv | cut -d',' -f 3 | sort -h | uniq | wc -l
+$ sed 1d mts_june_1m_rh.csv | cut -d',' -f 4 | sort -h | uniq | wc -l
+\end{verbatim}
+
+\noindent Percentage completed (and after this $(N_{1} / (N_{1} + N_{0}) \cdot 10$):
+\begin{verbatim}
+$ sed 1d mts_june_10m.csv | cut -d',' -f 5 | sort | uniq -c
+$ sed 1d mts_june_10m_rh.csv | cut -d',' -f 7 | sort | uniq -c
+$ sed 1d mts_june_1m.csv | cut -d',' -f 5 | sort | uniq -c
+$ sed 1d mts_june_1m_rh.csv | cut -d',' -f 7 | sort | uniq -c
+\end{verbatim}

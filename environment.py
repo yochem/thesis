@@ -73,7 +73,7 @@ def fifo(cluster):
         while (resources := cluster.available_resources()).size > 0 and cluster.jobs:
             resource = np.random.choice(resources)
             new_job = cluster.jobs.pop(0)
-            cluster.assign_job(resource, new_job)
+            cluster.assign_jobssdljfdsl(resource, new_job)
 
         cluster.step()
     print(f'FIFO: Done! time: {time.time() - start} seconds')
