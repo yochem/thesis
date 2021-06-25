@@ -35,8 +35,11 @@ Python version per algorithm. The tool used for creating and managing virtual
 Python environments is called \code{pyenv}\footlink{github.com/pyenv/pyenv}.
 An example of setting up a virtual environment:
 
-\begin{verbatim} $ pyenv install 3.7.10 $ pyenv virtualenv 3.7.10 meta-rl $
-pyenv activate \end{verbatim}
+\begin{verbatim}
+$ pyenv install 3.7.10
+$ pyenv virtualenv 3.7.10 meta-rl
+$ pyenv activate
+\end{verbatim}
 
 The above commands install Python 3.7.10, create a virtual environment called
 `meta-rl' that uses Python version 3.7.10 and activates this virtual
@@ -148,19 +151,34 @@ In \citeA{tassel2021} a gym environment for simulating the job shop scheduling
 problem is proposed. This environment provides the bridge between instances
 specified in the Taillard specification and the Gym interface. The Taillard
 specification, proposed in \citeA{taillard1993}, is a specification for
-computing instances. It specifies the number of machines and jobs and
-processing time per job for all machines. An example for an instance with one
-job and three machines. The machines are numbered from 0 to 2 and the
-processing time of the job is respectively 5, 8 and 9. The visiting order is
-1, 2, 0. The representation of this instance is shown in Fig.
-\ref{fig:taillard}. As can be seen, first the number of jobs and the number of
-machines and then one job per line, with the visiting order and their
-processing time. To apply the provided sequential data to this format, we
-first analyzed the existing instances. In the instances provided by
-\citeA{tassel2021} there were 40 or 45
-machines
+computing instances. It specifies the number of machines $\mathcal{M}$ and
+jobs $\mathcal{J}$ and processing time per job for all machines. An example
+for an instance with one job and three machines. The machines are numbered
+from 0 to 2 and the processing time of the job is respectively 5, 8 and 9. The
+visiting order is 1, 2, 0. The representation of this instance is shown in
+Fig. \ref{fig:taillard}.
 
 \input{./fig/taillard.tex}
+
+As can be seen, first the number of jobs and the number of machines and then
+one job per line, with the visiting order and their processing time. To apply
+the provided sequential data to this format, we first analyzed the existing
+instances. In the instances provided by \citeA{tassel2021} there were either
+40 or 45 machines, evenly distributed. The distribution of the number of jobs
+is shown in Fig. \ref{fig:jobs}. Our data was sequential, as is every line in
+the Taillard specification. One line describes the path one job travels
+between machines. To convert the provided data into we only used the transfer
+time. This was converted in the processing time in the Taillard specification.
+Then the data was divided in groups of size $\mathcal{M}$, then popped
+$\mathcal{J}$ items from these groups, shuffled the machine IDs ($id \in [0,
+\mathcal{M})$) and zipped the shuffled machine IDs and the transfer times
+together into one line for the Taillard instance.
+
+\input{./fig/jobs.tex}
+
+
+
+
 
 
 % \section{Selection of Models}\label{sec:models}
