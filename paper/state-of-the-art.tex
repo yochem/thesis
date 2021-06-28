@@ -1,4 +1,4 @@
-\chapter{Related Work}
+\chapter{State of the Art}\label{sec:state-of-the-art}
 
 In this chapter related work is discussed. In Section \ref{sec:scope} the
 scope of the thesis is defined and the methodology of finding related work is
@@ -15,15 +15,18 @@ focusesses on \rl based schedulers, not schedulers based on other forms of
 \ml.
 
 Comparing different methods and models is the main task in this thesis. To
-compare methods of models, a justified way of assessing methods and models is
-required. It is also important that the comparison is done on the indicators
-on which the performance depends. These are called the \kpis. The \kpis of \rl
-based schedulers are established from literature. Assessing the robustness of
-a model is also necessary for this research. By assessing robustness, a way to
-select a method for reducing retraining time can be selected.
+compare methods of models, a justified methodd of assessing methods and models
+is required. It is also important that the comparison is done on the
+indicators on which the performance depends. These are called the \kpis. The
+\kpis of \rl based schedulers are established from literature. Assessing the
+robustness of a model is also necessary for this research. By assessing
+robustness, a way to select a method for reducing retraining time can be
+selected.
 
 
-\section{Reinforcement Learning}\label{sec:rl}
+\section{Related Work}
+
+\subsection{Reinforcement Learning}\label{sec:rl}
 
 Most \ml based schedulers are \rl based, and therefore this thesis focuses on
 reducing retraining of \rl models. The reason most \ml based schedulers are
@@ -37,7 +40,7 @@ summarized in the following paragraph.
 homepage of the book (\url{http://aima.cs.berkeley.edu/}).}
 
 
-\subsection{Why Reinforcement Learning for Schedulers?}
+\subsubsection{Why Reinforcement Learning for Schedulers?}
 
 Reinforcement learning is one of the three basic paradigms in machine
 learning, along with supervised learning and unsupervised learning. \rl is
@@ -51,7 +54,7 @@ is that it does not depend on data, but rather learns from a feedback loop of
 rewards or reinforcements. It typically consists of one or more agents, a set
 of actions $A$ and a set of states $S$. This agent performs an action $a \in
 A$ to a perform state transition. This action leads to a reward. In many
-complex environments \rl is the only feasible way to train models because
+complex environments \rl is the only feasible method for training models because
 there might be little data available or the environment is too complex to
 model \cite{russell2010}. For the reason that \rl has no need for input data
 but solely needs an environment, actions and a reward function it is widely
@@ -60,7 +63,7 @@ and the nature of how \rl works is the reason this research is narrowed down
 to reducing retraining of \rl schedulers.
 
 
-\subsection{Reinforcement Learning Based Schedulers}
+\subsubsection{Reinforcement Learning Based Schedulers}
 
 Many reinforcement learning algorithms are used in state-of-the-art \rl
 based schedulers. Three different state-of-the-art \rl schedulers are
@@ -88,7 +91,7 @@ the instance size it is more flexible and robust.
 
 % - deep Q learning (free)
 
-\section{Evaluation of Reinforcement Learning Models}
+\subsection{Evaluation of Reinforcement Learning Models}\label{sec:evaluation}
 
 % TODO: How can we effectively assess and compare RL based methods in job
 % scheduling?
@@ -111,7 +114,7 @@ methods in literature are for example a framework for evaluating \rl in
 \citeA{khetarpal2018} and a novel evaluation method in \citeA{jordan2020}.
 
 
-\section{Assessing Robustness of Reinforcement Learning}
+\subsection{Assessing Robustness of Reinforcement Learning}
 
 If a \rl model is robust, it has the ability to cope with dynamic environments
 and works well in noisy environments. The goal of this thesis is to compare
@@ -121,7 +124,7 @@ not need much retraining time. Thus, making the \rl scheduler more robust will
 most likely result in less retraining time. This is why related work on robust
 reinforcement learning algorithms is discussed. The comparison between
 robustness of reinforcement learning models is only as descriptive as the
-metric used for it. This is way selecting a well-formed method for assessing
+metric used for it. Selecting a well-formed method for assessing
 robustness is important for this research.
 
 Many methods for assessing robustness of reinforcement learning use some kind
@@ -138,7 +141,7 @@ applicable in \rl methods with neural networks in it, for example \dqn.
 % todo: link pinto as example for open AI testing
 
 
-\section{Approaches to Reduce Retraining Time}\label{sec:reduce}
+\subsection{Approaches to Reduce Retraining Time}\label{sec:reduce}
 
 Reducing retraining time of reinforcement learning models is an important
 task. By doing this, reinforcement learning models get more robust
@@ -154,7 +157,7 @@ The reviewed approaches to reduce retraining time are discussed on category
 basis in the following subsections.
 
 
-\subsection{Modelling the Dynamic Environment}\label{sec:model}
+\subsubsection{Modelling the Dynamic Environment}\label{sec:model}
 
 Modelling the dynamics of the environment is a straightforward approach to
 taking account of the dynamics. For example, in job schedulers in cloud
@@ -177,7 +180,7 @@ state of the resource is provided, but predicting the outage of a resource is
 out of the scope of this thesis.
 
 
-\subsection{Adversarial Agents}\label{sec:adversarial}
+\subsubsection{Adversarial Agents}\label{sec:adversarial}
 
 Another approach for learning how to handle disturbance is by adding in a
 disturbing agent \cite{morimoto2005}. This agent learns to perform the most
@@ -208,7 +211,7 @@ deploys adversarial agents online to trick the model into unwanted states.
 This approach maintains competitive performance.
 
 
-\subsection{Reusing Knowledge}\label{sec:reusing}
+\subsubsection{Reusing Knowledge}\label{sec:reusing}
 
 Meta reinforcement learning is a method for for learning to quickly adapt
 online to new tasks. This is done in the context of model-based reinforcement

@@ -19,7 +19,8 @@ Lastly, in the Section \ref{sec:situ} the scope of the presented thesis is
 defined, the current situation is evaluated, the gap is identified and a
 research question is stated.
 
-\section{The Cloud}\label{sec:cloud}
+\section{Background}
+\subsection{The Cloud}\label{sec:cloud}
 
 The cloud is a popular term used for (a network of) data centers containing
 many computers that provide resources, for example storage and computing
@@ -44,7 +45,7 @@ resources. This reduces the cost of the resources, but also the maintenance
 costs. The reason cost is reduced because resources are bought in bulk and
 maintenance costs are reduced because there are less maintainers needed.
 
-\section{Job Scheduling}\label{sec:scheduling}
+\subsection{Job Scheduling}\label{sec:scheduling}
 
 Imagine cloud systems as described in Section \ref{sec:cloud}. These systems
 have many tasks, or as in this thesis called jobs, that need to be executed
@@ -72,21 +73,21 @@ NP-hardness. In the next paragraph is explained what it means to be a NP-hard
 problem and the reason that job scheduling is NP-hard.
 
 
-\subsection{NP-Hard}
+\subsubsection{NP-Hard}
 
 NP-hardness is a term used in the P versus NP problem. This problem is one of
 the seven Millennium Prize Problems \cite{carlson2006} and still unsolved. The
-P versus NP problem is about computational complexity, a way of categorizing
-problems based on `how hard' they are. Computational problems have two
-complexity aspects: the complexity to solve the problem and the complexity to
-verify if the solution to the problem is correct. The question is if the
-solution to a given problem can be verified quickly (in polynomial time), is
-there an algorithm that can find the solution quickly? Problems that can be
-\emph{solved} in polynomial time are in the P class. Problems that can be
-\emph{verified} in polynomial time are in the NP (nondeterministic polynomial
-time) class. If these classes fully overlap, i.e. every problem in P is also
-in NP and every problem in NP is also in P, then P equals NP. Many computer
-scientists believe this is not the case for all problems
+P versus NP problem is about computational complexity, an approach to
+categorizing problems based on `how hard' they are. Computational problems
+have two complexity aspects: the complexity to solve the problem and the
+complexity to verify if the solution to the problem is correct. The question
+is if the solution to a given problem can be verified quickly (in polynomial
+time), is there an algorithm that can find the solution quickly? Problems that
+can be \emph{solved} in polynomial time are in the P class. Problems that can
+be \emph{verified} in polynomial time are in the NP (nondeterministic
+polynomial time) class. If these classes fully overlap, i.e. every problem in
+P is also in NP and every problem in NP is also in P, then P equals NP. Many
+computer scientists believe this is not the case for all problems
 \cite{rosenberger2012}. Believed is that there are problems that can be
 verified quickly but not solved quickly, which are called NP-hard problems. A
 well-known NP-hard problem is the Sudoku puzzle, especially larger ones
@@ -102,7 +103,7 @@ Job scheduling is NP-hard because it can be derived from the Graph Coloring
 Problem, as done in \citeA{karp1972}. The graph coloring problem is a NP-hard
 problem itself.
 
-\section{Current Situation and Improvements}\label{sec:situ}
+\subsection{Current Situation and Improvements}\label{sec:situ}
 
 In this section current traditional (non-AI) schedulers are reviewed and
 improvements using \ai techniques like \rl are
@@ -112,7 +113,7 @@ narrowed down to reducing retraining time of \rl based schedulers in cloud
 environments. The choices made in defining the terms and scopes of this thesis
 are listed in the following paragraph.
 
-\subsection{Traditional Schedulers}
+\subsubsection{Traditional Schedulers}
 
 Current cloud resource managers are developed specifically for the system it
 manages, based on simple heuristics and fine tuned by trial and error.
@@ -151,7 +152,7 @@ research, e.g. \citeA{mao2019, mao2016, zhang2020}, has shown that
 using deep reinforcement learning for resource management improves average job
 completion time by at least 21\% \cite{mao2019}.
 
-\subsection{The Problem}
+\section{Motivation}
 
 In the previous section the problem with non-\ai schedulers is identified.
 Thereafter, improvements using \rl are shown, but these \rl improvements also

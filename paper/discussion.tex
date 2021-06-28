@@ -1,0 +1,118 @@
+\chapter{Discussion}\label{sec:discussion}
+
+\section{Achievements}
+
+During this research project there were many larger and smaller achievements.
+We discuss three achievements in this section.
+
+Firstly, right at the start of the project, the two first chapters (§\ref{sec:intro}
+and §\ref{sec:state-of-the-art}) were written. Because the BSc. \ai does not
+require much academic writing, writing was not one of the best skills.
+However, during writing, this developed. Continuing with the other chapters
+after the experiments was easier and costed a lot less time. One of my
+achievements therefor is the improvement in English academic writing.
+
+Secondly, during the experiments, a lot if projects with very specific Python
+dependencies had to be run on the same machine. Virtual environments were not
+necessary for us to be used before this project. After the experiments a
+better understanding of Python's virtual environments and the knowledge of the
+advantages of containerizing these environments has developed.
+
+Lastly, during the whole project, much is learned about the fields of cloud
+computing and \jss. Before the project there was almost no knowledge about
+this fields. The only aspect of this thesis with some foreknowledge are the
+workings of reinforcement learning and python programming. Due to the lack of
+knowledge in cloud computing and scheduling much information had to be read to
+get somewhat of an understanding of it. It is a complex field working on very
+complex technology. It was very interesting to get some insights in these
+fields.
+
+
+\section{Shortcomings}
+
+In this section the shortcoming of this research are discussed. During the
+experiments it was not managed to fulfil all experiments to properly answer
+the research question. The reasons for this are discussed in the following
+subsections.
+
+
+\subsection{Papers with Code}
+
+Nowadays, many papers include the corresponding
+code\footlink{paperswithcode.com}. Although this is generally a good thing
+that should be encouraged, it is not always usable yet. All code repositories
+that accompanied related work, lacked documentation. The paper itself does not
+document how code works and additional documentation is not written either.
+Working with the codebase required reading the written code, that usually also
+lacks comments and good design patters, and figuring out how to adjust it to
+work with your own data, code, or environment. To give an example, the \mrlco
+code\footlink{github.com/linkpark/metarl-offloading} only specifies the entry
+point of the code and which packages should be installed. The list of packages
+is incomplete and it is not specified that an old version of Python should be
+installed. Another example from the same code repository is that the command
+for generating a specific graph is commented in the first line of the file.
+But when running these commands, the jobs lack an \code{expect\_size}
+attribute. This is not something that can be done with \code{DAGGEN} and must
+be later on added by the authors of the research paper. This should definitely
+be documented. Academic code is also error-prone with unclear error messages as
+result. The unclear error messages require lots of time to debug, which is not
+doable in a time-critic project like the thesis. To conclude, the shortcoming
+was the expectation that code provided with papers would be industry-grade
+code with clear documentation. This was not the case with most projects, which
+leads into time-consuming debug sessions. Because of this, I had less time for
+the actual experiments. Although papers that include code are a good step in
+the right direction, it is not very useful yet because of the low quality code
+and documentation. Due to lack of documentation it is necessary to read the
+code to be able to use it, which can cost much time.
+
+
+\subsection{Standards in Reinforcement Learning}\label{sec:standards}
+
+At the start of the experiments it was clear that the papers on \rl and
+scheduling algorithms lack standards in data format and API. We found no
+standard for this during literature review. This made comparing and assessing
+them much harder. It was not possible to loop through the models, fit them on
+the same data and get the same metrics from them. It also was not possible to
+reuse code written for one specific algorithm. Data had to be converted into
+data formats that differ very much from each other. From graph structure to a
+specification dating from \citeyearNP{taillard1993}. This did not match the
+expectations. Many times in the BSc. \ai, data would be presented in a
+\textit{Pandas DataFrame} and algorithms would work on this tabular data.
+Looking back, the assumption that \jss data would also generally be in tabular
+form should not have been made. There should be a standard in the field of \rl
+and \jss for data and code APIs to easily swap \rl algorithms and train many
+different \rl algorithms on the same data or environment. Good steps have been
+made by OpenAI with their Gym environment, but the \jss environment is not
+good yet.
+
+
+\subsection{Generating Data}
+
+A popular method for training \ai schedulers is to generate instances. There
+are many advantages: generating random environments is easy and can still be
+tweaked by parameters. The data does not have to be saved on disk and there is
+no I/O overhead. Random environments are also a good exercise: there are
+likely no patterns in incoming jobs. Because of this, the \ai will not just
+recognize patterns and change approach accordingly. But generating data has
+its disadvantages, e.g. not reproducible due to randomness, unclear how
+parameters might affect the generated data, not the right probability
+distribution in randomness, and it might differ to much from real world data.
+It is also hard to detect possible overfitting on certain data aspects and can
+introduce biases \cite{hall2001}.
+
+Another important problem with generated data is that it is hard to compare
+performance between two algorithms using different data generators. Even if
+the parameters are all equal, it still might have different random
+distributions, other logic or some magic numbers in it. The problem with
+different data input formats as discussed in Section \ref{sec:standards} also
+exists when the data is generated.
+
+
+\subsection{Concluding Shortcomings}
+
+The results are not the expected results from the start of the research
+project. Most of the shortcomings that led to not achieving the intended
+results are due to the models that do not meet the expectations on
+standardization and clear documentation. Converting the data for every model
+that would be evaluated was not feasible in the amount of time for this
+project.
