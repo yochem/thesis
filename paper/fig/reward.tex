@@ -1,8 +1,10 @@
 \begin{figure}[htp!]
     \centering
     \includegraphics[width=.7\textwidth]{./fig/reward.pdf}
-    \caption{The progress of average reward during training on \mrlco and
-    Euro-Argo log data. The average reward on the \mrlco data seems to variate much
-    more than on our data. The \mrlco data delivers a higher reward.}
+    \caption{The progress of average reward during training Euro-Argo log
+    data. The data was split in 2 batches of the same size. The blue line is
+    the first time learning, so no meta-learning involved. After this, a model
+    using the same batch data (orange) and a model using the other batch of
+    data (green) were trained.}
     \label{fig:rewards}
 \end{figure}

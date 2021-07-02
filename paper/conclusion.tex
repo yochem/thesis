@@ -1,1 +1,87 @@
 \chapter{Conclusion}\label{sec:conclusion}
+
+The cloud is a network of nodes providing resources for computation. Jobs
+require a specific amount of resources to complete and needs to be scheduled
+on the nodes. As a result of the growth of cloud environments, the scheduling
+task is becoming more and more complex. Cloud systems are currently too
+complex for humans to create a scheduler with heuristics. Now that humans are
+not able to design efficient schedulers, reinforcement-learning-based
+schedulers learn to schedule jobs efficiently. Although these \rlbased
+schedulers can achieve high efficiency, they lack robustness. After a change
+in the environment, i.e. the addition or removal of nodes, the scheduler has
+to retrain. In this thesis, a method for selecting approaches to reduce this
+retraining time is researched. This led to the following research question:
+\begin{quote}
+How to select a method for reducing the retraining time of reinforcement learning
+    based resource schedulers in cloud environments?
+\end{quote}
+Three sub-questions were formed to answer the research question. The three
+sub-questions will now be answered by drawing a conclusion from the literature
+and results.
+
+The first research question, ``How can we effectively assess and compare
+\rlbased methods in job scheduling?'' is answered using literature. Although
+the OpenAI Gym is the most popular method for evaluating reinforcement
+learning algorithms, there is not yet a standard evaluation method. The
+metrics are the number of episodes before solve. Some environments define
+solving by receiving an average reward threshold over 100 consecutive trials,
+while other environments have a clear goal that can be achieved. It can be
+concluded that openAIs Gym is an effective method for assessing and comparing
+\rlbased methods in job scheduling.
+
+The second research question, ``What are the indicators to assess the
+robustness of \rlbased schedulers?'', is also answered by literature.
+Indicators to assess the robustness of \rlbased schedulers are their performance
+in noisy environments with disturbance. Another measurement for
+assessing this performance is by changing the dynamic aspects of the
+environment. For methods using deep learning, the neural coverage is a metric
+for robustness. Since deep learning is used in combination with \rl by many
+schedulers, this metric can also effectively indicate the robustness of \rlbased
+schedulers. Thus, to assess the robustness of \rlbased schedulers, the performance
+in noisy or dynamic environments can be used as an indicator. When the scheduler
+uses deep learning, the neural coverage is also an available indicator for
+robustness.
+
+The last research question, ``What are the state-of-the-art approaches for
+reducing retraining time?'', is answered by three types of approaches. The
+first approach is modelling the dynamics in the environment. The
+state-of-the-art method in this approach is \citeA{nagayoshi2013}. The second
+approach is the use of adversarial agents. These agents learn to disturb the
+actual agent as much as possible. The state-of-the-art research on this is
+\citeA{chen2018}. The last approach is meta-learning. Meta-learning learns how
+to learn, which can improve learning efficiency. The \mrlco model from
+\citeA{wang2020} is the state-of-the-art meta-learn, and also used in the
+experiments.
+
+With an answer found for the three sub-questions, the research question will
+be answered. Again, the research question of this thesis is ``How to select a
+method for reducing retraining time of reinforcement learning based resource
+schedulers in cloud environments?''. A method for reducing the retraining time
+of \rlbased schedulers can be selected on three criteria: the overall
+performance of the model, the robustness of the model and the training time.
+The first criterion is needed to prevent the method from deteriorating the
+actual model. The overall performance should not be worse than before. The
+second criterion, robustness, can reduce the frequency of retraining. If a
+model is more robust it might only have to retrain on large environmental
+changes, which means fewer retraining, reducing training time. The last
+criterion is reducing the retraining time. A method might require as many
+training sessions as first, but if it greatly improves the time it takes to
+train, it would also be an improvement. As discussed in Section
+\ref{sec:discussion}, in Figure \ref{fig:rewards} it can be seen that
+meta-learning requires fewer iterations to achieve the same reward as the
+previous training session.
+
+To conclude, selecting a method for reducing retraining time of \rlbased
+schedulers can be done on three criteria: the overall performance of the
+model, the robustness of the model and the training time of the model.
+
+\begin{itemize}[noitemsep]
+    \item The overall performance of the model, assessed by the performance
+        in a Gym environment or comparing the received reward to other models.
+    \item The robustness of the model, assessed by including disturbances in
+        the environment or an adversarial agent, or by controlling the
+        dynamics of the environment.
+    \item The training time of the model, which can be reduced by modelling
+        the environment, adding in robustness through adversarial agents and
+        meta-learning.
+\end{itemize}

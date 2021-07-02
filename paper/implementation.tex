@@ -1,27 +1,44 @@
-\chapter{Implementation}
+\chapter{Implementation}\label{sec:method}
 
-In this chapter the implementation of the system is described. In this thesis
-approaches to reduce retraining time of \rl based schedulers are compared. The
-approaches are compared against multiple \rl based schedulers. This is done to
-see how well the approaches work on different \rl algorithms. Firstly the
-software and hardware for the experiments is described (§\ref{sec:setup}).
-Secondly the data and its usage is described in Section \ref{sec:data}.
+In this chapter, the implementation of the system is described. In this
+thesis, approaches to reduce retraining time of \rlbased schedulers are
+compared. The approaches are compared against multiple \rlbased schedulers to
+evaluate how well the approaches work on reducing retraining time.
+
+Firstly, the workflow of the experiments is described. Secondly, the software
+and hardware for the experiments is described (§\ref{sec:setup}). Lastly the
+data and its usage are described in Section \ref{sec:data}.
+
+\section{Workflow}
+
+Two approaches are taken to address the research questions. The three
+sub-questions required review of literature to answer the sub-questions. The
+methodology to discover literature is described in Section \ref{sec:scope}.
+After literature review, the state-of-the-art meta-learning model and other
+state-of-the-art \rl models were selected to assess robustness. The data had
+to be converted into the desired data format to run the models. The
+methodology of converting this data is described in Section \ref{sec:data}.
+After data was converted, the algorithms were run in their specific
+environments. Setting up the environments is described in Section
+\ref{sec:setup}.
+
 
 \section{Hardware and Software Specification}\label{sec:setup}
 
 This section explains the hardware and software setup and configuration used
-for the research. First the hardware used is described and after this some
-important software and its usage is described. The experiments were run on
-workstation 8 provided by the Robotics Lab at the University of Amsterdam.
-Workstation 8 is an Alienware Aurora R9 1.0.4. The CPU is an Intel i9-9900 (16
-threads) running at 5.000 GHz and the GPU is a NVidia 2080 Ti (11 GB) with
-CUDA 10 and driver 415. The operating system is Ubuntu 18.04.4. All algorithms
-were implemented in the Python programming language\footlink{python.org}. To
-prevent versioning issues between dependencies, a virtual Python environment
-was created for every algorithm. This also allowed us to run a different
-Python version per algorithm. The tool used for creating and managing virtual
-Python environments is called \code{pyenv}\footlink{github.com/pyenv/pyenv}.
-An example of setting up a virtual environment:
+for the research. Firstly the hardware used is described, and after the
+hardware some vital software and its usage is described. The experiments were
+run on Workstation 8 provided by the Robotics Lab at the University of
+Amsterdam. Workstation 8 is an Alienware Aurora R9 1.0.4 machine, with an
+Intel i9-9900 (16 threads) CPU running at 5.000 GHz, and a NVidia 2080 Ti (11
+GB) GPU with CUDA 10 and driver 415. The operating system is Ubuntu 18.04.4.
+All algorithms were implemented in the Python programming
+language\footlink{python.org}. A virtual Python environment was created for
+every experiment to prevent versioning issues between dependencies. This also
+allowed us to run a different Python version per algorithm. The tool used for
+creating and managing virtual Python environments is called
+\code{pyenv}\footlink{github.com/pyenv/pyenv}. An example of setting up a
+virtual environment:
 
 \begin{verbatim}
 $ pyenv install 3.7.10
@@ -34,33 +51,31 @@ The above commands install Python 3.7.10, create a virtual environment called
 environment. From then on, packages could be installed using the Python
 package installer \code{pip} and can only be used in the `meta-rl'
 environment. Standard practice is to include a \code{requirements.txt} file in
-the root directory of your project. However, only some of the projects used in
+the root directory of the project. However, only some of the projects used in
 this thesis included it. Installing the needed packages at the right version
 is as simple as running the command \code{pip install -r requirements.txt}.
 
-Some packages are almost always used when writing \ai software in Python.
-These packages are NumPy, Scipy, Keras, Tensorflow or PyTorch\footnotemark.
-NumPy and SciPy provide an API for scientific computing and most importantly a
-solid multidimensional array object. The other three provide a back-end for
-creating well optimized \ml algorithms, especially for neural networks.
-Another software project used extensively with this thesis is the OpenAI Gym
-\cite{gym2016}. Gym is a for developing and comparing reinforcement learning
-algorithms. It mostly provides access to many simple environments to develop
-your \rl algorithm on, or as their slogan says ``We provide the environment;
-you provide the algorithm.''\footlink{gym.openai.com}.
+Frequently used Python packages in scientific computing are the following:
+NumPy, Scipy, Keras, Tensorflow and PyTorch\footnotemark. NumPy and SciPy
+provide an API for scientific computing and a solid multidimensional array
+object. The other three provide a back-end for creating well-optimised \ml
+algorithms, especially for \nn. Another software project used extensively with
+this thesis is the OpenAI Gym \cite{gym2016}. Gym is a package for developing
+and comparing reinforcement learning algorithms. It provides access to many
+environments to develop a \rl algorithm on.
 
 \footnotetext{Their respective home pages: \link{numpy.org}, \link{scipy.org},
 \link{keras.io}, \link{tensorflow.org} and \link{pytorch.org}.}
 
 
-\section{Data and Preprocessing}\label{sec:data}
+\section{Workload Data Set}\label{sec:data}
 
-Four datasets were provided by the supervisors at the start of the thesis. The
-data is log data from the Euro-Argo project\footlink{euro-argo.eu/}. The
-datasets described transfered messages in intervals of one or ten minutes. The
-four datasets provided 43,200, 182,283, 4,320 and 28,312 rows of data, which
-sums up to 258,118 rows of data in total. The datasets all had five columns:
-the start time, the transfer time, request number, byte count and completion
+The supervisors provided four datasets at the start of the thesis. The data is
+log data from the Euro-Argo project\footlink{euro-argo.eu/}. The datasets
+described received messages in intervals of one or ten minutes. The four
+datasets provided 43,200, 182,283, 4,320 and 28,312 rows of data, which sums
+up to 258,118 rows of data in total. The datasets all had five columns: the
+start time, the transfer time, request number, byte count and completion
 status. An overview of the datasets is provided in Table \ref{table:data}.
 
 \input{./fig/table-data.tex}
@@ -68,11 +83,11 @@ status. An overview of the datasets is provided in Table \ref{table:data}.
 The data was complete, i.e. it had zero missing values. Not having missing
 values does not mean the data is clean. The dataset contained 3 rows where the
 transfer time, request id and byte count had the value of 0. The 3 rows were
-dropped because it lead to problems during the conversion of the data into
-another format. Another quirk to take note of is that even though the column
-name `request ID' would suggest its values will be IDs and thus unique, this
+dropped because it leads to problems during converting the data into
+another format. Another quirk to note is that even though the column
+name `request ID' suggests its values will be IDs and thus unique, this
 is not the case. For example, there are 1,576 unique IDs in the 4,320 rows of
-of the \code{mts\_june\_10m.csv} file. All counts of unique IDs and rows are
+the \code{mts\_june\_10m.csv} file. All counts of unique IDs and rows are
 shown in Table \ref{table:files}. The commands for getting this data can be
 found in Appendix \ref{app:dataset}.
 
@@ -80,12 +95,12 @@ found in Appendix \ref{app:dataset}.
 
 \subsection{Converting to other data formats}
 
-The Euro-Argo dataset was not compatible with most models. This is first of
-all because it is not a \jss dataset. The data are incoming requests from many
-Internet of Things-like devices. The data is sequential and are not different
-jobs that need to be scheduled. It is possible to convert the original data to
-formats that are more used in \jss tasks. In the following two sections, two
-conversions are discussed.
+The Euro-Argo dataset was not compatible with most models. It is not
+compatible with most models because it is not a \jss dataset. The data are
+incoming requests from many Internet of Things-like devices. The data is
+sequential and are not different jobs that need to be scheduled. It is
+possible to convert the original data to formats that are more used in \jss
+tasks. In the following two sections, two conversions are discussed.
 
 
 \subsubsection{Directed Acyclic Graph}\label{sec:dag}
@@ -104,14 +119,14 @@ maximum number of tasks that can be executed concurrently. Because the
 Euro-Argo data was originally not \jss data but log data of requests, the
 converted data used parameters and other aspects from the example data. In the
 example data, all $n$ values were in the range of 1 to 50. The $n$ values were
-determined by our byte count value, which was scaled to be in $[1, 50]$. Ten
+determined by the byte count value, which was scaled to be in $[1, 50]$. Ten
 outliers were removed to get the mean $n$ closer to the example mean $n$. The
 $D_{min}$ and $D_{max}$ were generated from the transfer time values. The
 other three parameters, $d$, $ccr$, and $fat$, were randomly chosen. The
 distribution of these random values followed the distribution of the parameter
-values found in the example data. For $d$ this was an uniform distribution
-$[4, 10]$, for $ccr$ it was an uniform distribution in $[3, 6]$ and for $fat$
-it was an uniform distribution in $[4, 9]$. There was one other parameter, the
+values found in the example data. For $d$ this was a uniform distribution
+$[4, 10]$, for $ccr$ it was a uniform distribution in $[3, 6]$ and for $fat$
+it was a uniform distribution in $[4, 9]$. There was one other parameter, the
 regularity, which was always $0.5$ in the example graphs. An example of a
 generated DAGGEN command is the following: \code{daggen -{}-dot -n 4
 -{}-mindata 2656 -{}-maxdata 2658 -{}-density 0.4 -{}-ccr 0.5 -{}-fat 0.6
@@ -123,7 +138,7 @@ probably added by the authors of the model that uses this data. We noticed
 that the expected size is 2.00, 2.50, or 3.33 times smaller than the size
 attribute of that task. The distribution was almost uniform: 16500 times a
 factor of 2, 16820 times a factor of 2.50, and 16680 times a factor of 3.33.
-The expected size was thereafter integrated using the factors as mentioned
+The expected size was thereafter integrated using the factors as described
 above.
 
 \footnotetext{The model called metaRL-offloading uses DAG data. The example
@@ -135,16 +150,16 @@ data can be found here: \urlmetadata.}
 \subsubsection{Taillard Specification}\label{sec:taillard}
 
 Other models worked with the popular OpenAI Gym environment. The Gym
-environment allows people to build their own environment to make it possible
-to test \rl algorithms in other kinds of environments. Gym itself mostly
-provides game-like environments. The interface for Gym is very minimal, as
-typical \rl algorithms have simple interaction with the environment. Most
-importantly, it exposes the following methods and attributes:
-\code{env.reset()} which resets the environment and returns the start state,
-\code{env.observation\_space} which resembles the current state,
-\code{env.action\_space} which are all possible actions in the current state,
-and \code{env.step(action)} which performs an action and returns the new
-state, a reward for the action and if the model is done.
+environment allows people to build custom environments to make it possible to
+test \rl algorithms in other kinds of environments. Gym itself provides
+game-like environments. The interface for Gym is very minimal, as typical \rl
+algorithms have simple interaction with the environment. Most importantly, it
+exposes the following methods and attributes: \code{env.reset()} which resets
+the environment and returns the start state, \code{env.observation\_space}
+which resembles the current state, \code{env.action\_space} which are all
+possible actions in the current state, and \code{env.step(action)} which
+performs an action and returns the new state, a reward for the action and if
+the model is done.
 
 In \citeA{tassel2021} a gym environment called \code{JSSEnv} for simulating
 the job shop scheduling problem is proposed. This environment provides the
@@ -153,7 +168,7 @@ interface. The Taillard specification, proposed in \citeA{taillard1993}, is a
 specification for computing instances. It specifies the number of machines
 $\mathcal{M}$ and jobs $\mathcal{J}$ and processing time per job for all
 machines. An example for an instance with one job and three machines. The
-machines are numbered from 0 to 2 and the processing time of the job is
+machines are numbered from 0 to 2, and the processing time of the job is
 respectively 5, 8 and 9. The visiting order is 1, 2, 0. The representation of
 this instance is shown in Figure \ref{fig:taillard}.
 
@@ -161,16 +176,17 @@ this instance is shown in Figure \ref{fig:taillard}.
 
 As can be seen, first the number of jobs and the number of machines and then
 one job per line, with the visiting order and their processing time. To apply
-the Euro-Argo data to this format, we first analyzed the existing
-instances. In the instances provided by \citeA{tassel2021} there were either
-40 or 45 machines, evenly distributed. The distribution of the number of jobs
-is shown in Figure \ref{fig:jobs}. Our data was sequential, as is every line in
-the Taillard specification. One line describes the path one job travels
-between machines. To convert the Euro-Argo data into we only used the transfer
-time. This was converted in the processing time in the Taillard specification.
-Then the data was divided in groups of size $\mathcal{M}$, then popped
-$\mathcal{J}$ items from these groups, shuffled the machine IDs ($id \in [0,
-\mathcal{M})$) and zipped the shuffled machine IDs and the transfer times
-together into one line for the Taillard instance.
+the Euro-Argo data to this format, we first analysed the existing instances.
+In the instances provided by \citeA{tassel2021} there were either 40 or 45
+machines, evenly distributed. The distribution of the number of jobs is shown
+in Figure \ref{fig:jobs}. The Euro-Argo data was sequential, as is every line
+in the Taillard specification. One line describes the path one job travels
+between machines. To convert the Euro-Argo data into Taillards' specification
+we only used the transfer time. The transfer time was converted in the
+processing time in the Taillard specification. Then the data was divided in
+groups of size $\mathcal{M}$, then popped $\mathcal{J}$ items from these
+groups, shuffled the machine IDs ($id \in [0, \mathcal{M})$) and zipped the
+shuffled machine IDs and the transfer times together into one line for the
+Taillard instance.
 
 \input{./fig/jobs.tex}

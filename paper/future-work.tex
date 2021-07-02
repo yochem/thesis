@@ -1,1 +1,57 @@
-\chapter{Future Work}
+\chapter{Future Work}\label{sec:future-work}
+
+In this section approaches for improving this reseach are suggested. The
+current shortcomings of the field and how they can be prevented are discussed.
+
+
+\section{Papers with Code}
+
+Nowadays, many papers include the corresponding
+code\footlink{paperswithcode.com}. Although this is generally a good thing
+that should be encouraged, it is not always usable yet. All code repositories
+that accompanied related work lacked documentation. The papers themself do not
+document how code works, and additional documentation is not written either.
+Working with the codebase requires reading the written code, which usually
+lacks comments and good design patterns, and figuring out how to adjust it to
+work with other data, code, or environment. To give an example, the \mrlco
+code\footlink{github.com/linkpark/metarl-offloading} only specifies the entry
+point of the code and which packages should be installed. The list of packages
+is incomplete and it is not specified that an old version of Python should be
+installed. Another example from the same code repository is that the command
+for generating a specific graph is commented in the first line of the file.
+But when running these commands, the jobs lack an \code{expect\_size}
+attribute. This attribute is not something that can be done with \code{DAGGEN}
+and must be later on added by the authors of the research paper, which should
+definitely be documented. Although papers that include code are a good step in
+the right direction, it is not very useful yet because of the low-quality code
+and documentation. Good practice in future research will be to better document
+code and make it available for others to experiment with the code.
+
+
+\section{Standards in Reinforcement Learning}\label{sec:standards}
+
+In future research, more research is needed to design standards for research
+in reinforcement learning. Three standards would significantly improve comparative
+research.
+
+The first improvement would be a standard in data formats used in \rlbased
+schedulers. The data formats differ too much to compare \rlbased schedulers
+rightfully using different data formats. The second improvement would be the
+exposed API for environments. OpenAIs Gym is a step in the right direction.
+The API is clear and straightforward. The exposed functions and attributes as
+described in Section \ref{sec:taillard} should be the standard for every \jss
+environment. The third improvement would be a standard in the API exposed by
+the model. It should be intuitive to provide a policy, environment and
+hyperparameters to a \rlbased scheduling model.
+
+In addition to improving standards to improve comparative studies on \rlbased
+schedulers, future work should be done on reducing retraining time. Comparing
+methods for reducing retraining time is an important subject and should be
+better executed in the future. If new standards are adopted in the field, it
+should cost less time to compare methods for reducing
+retraining time. New methods could then be actively compared with other
+methods in a controlled, unbiased environment. Cloud providers and future
+researchers can then select a method to reduce retraining time in their cloud
+environments. Reducing retraining time reduces the energy usage and costs
+required for training machine learning algorithms. Reducing the retraining
+time is better for cloud providers, end-users and the environment.

@@ -1,34 +1,29 @@
-\chapter{Experiments}
+\chapter{Experiments}\label{sec:experiments}
 
-In this section the performed experiments are described and results of the
-experiments are shown. The experiments were performed on the workstation
-described in Section \ref{sec:setup}. All experiments were programmed in
-Python and open-source software projects for the models and environment were
+In this section, the performed experiments are presented, and results of the
+experiments are shown. The two experiments were performed on the workstation
+described in Section \ref{sec:setup}. Both experiments were programmed in
+Python, and open-source software projects for the models and environment were
 used extensively.
 
-\section{Meta Reinforcement Learning}
+\section{Characterizing Meta Reinforcement Learning}
 
 The objective of the first experiment was to evaluate the adaptiveness and
-reduce in retraining time with meta \rl. This is done using the meta \rl
-offloading model, called \mrlco, proposed in \citeA{wang2020}. This model
-required the data to be a \DAG in DOT format. For this, the Euro-Argo log data
-was converted into these \DAG files. This process is described in Section
-\ref{sec:data}. Running the experiments with the newly converted data required
-modifications in the source code of \mrlco. In the \code{meta\_trainer.py}
-file there was a list of directories containing 100 graph data files. This was
-changed into the directories with our data. It was also possible to change
-hyperparameters of the model in this source file, but this was not done in
-this experiment.
+reduce in retraining time with meta \rl. The evaluation is done using the meta
+\rl offloading model, called \mrlco, proposed in \citeA{wang2020}. The data
+was converted into \DAG data (see \ref{sec:data}). Running the experiments
+with the converted data required modifications in the source code of \mrlco.
+The modifications were made in the \code{meta\_trainer.py} file. There was a
+list of directories containing 100 graph data files, which was changed into the
+directories with the Euro-Argo data. More modifications have been done to fix
+bugs, e.g. adding in logic for taking the maximum value of an array when it is
+empty.
 
-% todo: hyperparameters wel of niet aangepast?
-\input{./fig/table-exec-time.tex}
-
-The model was ran three times: first with their own data, then with the first
-part of the converted Euro-Argo data and thereafter with the second part of
-the converted Euro-Argo data. Each run consisted of 2,000 iterations in batch
-sizes of 100. After each batch a TensorFlow checkpoint was saved on disk.
-Every iteration it appended a row of data to a csv (comma separated value)
-file. The following aspects of each iteration were saved:
+After the bug fixing, running the model was possible. Each run consisted of
+2,000 iterations in batch sizes of 100. After each batch a TensorFlow
+checkpoint was saved on disk. Every iteration it appended a row of data to a
+comma separated value (csv) file. The following aspects of each iteration were
+saved:
 
 \begin{itemize}[noitemsep]
     \item Iteration
@@ -56,50 +51,80 @@ file. The following aspects of each iteration were saved:
 
 \input{./fig/return.tex}
 
-The first run used 19 directories of 100 graph files. The reward in the last
-iteration of training was $-5.42$. The average return value at the last
-iteration was $-5.60$. For the second run the model was trained on 15
-directories of 100 graph files, thus 1,500 graphs in total. The average reward
-and average return in the last iteration where respectively $-6.74$ and
-$-6.89$. The last run, on the other half of the Euro-Argo data, was also
-performed on 1,500 graphs. The average reward and average return were $-6.97$
-and $-6.93$ respectively. The maximal, minimal and average return value per
-iteration are shown in Figure \ref{fig:return} and the progress of the average
-reward during training is shown in Figure \ref{fig:rewards}. The model also
-logged the execution time of the policy and environment. The average execution
-times per run is listed in Table \ref{table:exectime}. There is little
-difference in the execution times. The largest difference in Policy execution time
-between \mrlco data and the second batch of the Euro-Argo data is 0.02889 and
-the largest difference in environment execution time is 0.042484.
+\input{./fig/table-exec-time.tex}
+
+\subsection{Recreating MRLCO Results}
+
+The first experiment was recreating the results from the paper. This was done
+by running the \mrlco model without changes on the provided data. The two runs
+are plotted in Figure \large{TODO}\normalsize. It is visible that the second run
+converges quicker due to meta-learning. The reward in the last iteration of
+training was $-5.42$. The average return value at the last iteration was
+$-5.60$.
+
+
+\subsection{MRLCO with Euro-Argo Data}
 
 \input{./fig/reward.tex}
 
-\section{OpenAI Gym}
+The second set of experiments was done with the converted Euro-Argo data.
+Three training phases were done. The first training phase was a baseline run,
+without any meta-learning up front. It was trained on the first half of the
+data: 1500 graph files. This half will from now on be called batch 1, the
+other half batch 2. After 1955 iterations the baseline model reached its
+optimal reward of -6.7. Now the baseline model is trained, it can be used for
+meta-learning. Two meta-learning runs were done: one with the exact same data,
+batch 1 and another one with different data from the same distribution, batch
+2. These runs reached their optimal reward after respectively 521 and 920
+iterations. The real time of these iterations are listed in
+\ref{table:max-reward}. In the table it is shown that the training time
+speedup on the same data is 105 minutes, from almost three hours to a bit more
+than one hour. The training time speedup on new data is 54 minutes. The time
+difference between the full training sessions is not significant. In Table
+\ref{table:exectime}, the total execution times for policy and environment are
+shown. The difference in execution time between the different runs are only a
+couple seconds. The maximal reward on the second data batch is -6.8, a 0.1
+difference with the maximal reward from the base line model. The progress of
+average reward for all three training phases are plotted in Figure
+\ref{fig:rewards}. In this figure it is clear that the meta-learned runs
+achieve their optimal policy in an earlier iteration. Even when the reward at
+the start is much lower, it still learns very quick using meta-learning.
 
-The second experiments were done to evaluate multiple \rl algorithms as
-schedulers. A side objective of this experiment was to have a good testbed for
-future experiments. OpenAI's Gym was chosen for this because of its popularity
-and simplicity. As described in Section \ref{sec:evaluation} and Section
-\ref{sec:setup} OpenAI is a popular platform for creating, testing and
-evaluating reinforcement learning models. The environment used in this
-experiment is described in Section \ref{sec:taillard}. The \jss environment
-(\code{JSSEnv}) in combination with the \code{keras-rl}
-package\footlink{github.com/keras-rl/keras-rl} would allow us to experiment
-with many different \rl algorithms and evaluate their performance as
-scheduler. The \code{keras-rl} package currently supports \acrfull{dqn}
-\cite{mnih2013}, Double \dqn \cite{hasselt2016}, Deep Deterministic Policy
-Gradient \cite{lillicrap2015}, Continuous \dqn \cite{gu2016}, Cross-Entropy
-Method \cite{szita2006}, Dueling network \dqn (Dueling \dqn) \cite{wang2016},
-and Deep SARSA. Simulating the agent in the \jss environment required very
-little code. First make the Gym environment, than define a neural network
-(shown in Figure \ref{fig:neuralnetwork}), define a \rl agent, providing a
-policy and the neural network for it, and lastly fit it on the environment.
+The return value is plotted in Figure \ref{fig:return}. The difference in return
+values between the runs using Euro-Argo is not significant. There is however a
+difference with the \mrlco data, which has a higher minimal return value. No
+reason is found for this difference. The maximal and average return value are
+around the same value.
+
+\input{./fig/table-max-reward.tex}
+
+
+\section{Comparing Reinforcement Learning Model in OpenAI Gym}
+
+The second group of experiments were done to evaluate multiple \rl algorithms
+as schedulers. A side objective of this experiment was to have a good testbed
+for other experiments in this research project. OpenAI's Gym was chosen for
+this because of its popularity and simplicity. As described in Section
+\ref{sec:evaluation} and Section \ref{sec:setup} OpenAI is a popular platform
+for creating, testing and evaluating reinforcement learning models. The
+environment used in this experiment is described in Section
+\ref{sec:taillard}. The \jss environment (\code{JSSEnv}) in combination with
+the \code{keras-rl} package\footlink{github.com/keras-rl/keras-rl}, would allow
+to experiment with many different \rl algorithms and evaluate their
+performance as scheduler. The \code{keras-rl} package currently supports
+\acrfull{dqn} \cite{mnih2013}, Double \dqn \cite{hasselt2016}, Deep
+Deterministic Policy Gradient \cite{lillicrap2015}, Continuous \dqn
+\cite{gu2016}, Cross-Entropy Method \cite{szita2006}, Dueling network \dqn
+(Dueling \dqn) \cite{wang2016}, and Deep SARSA. Simulating the agent in the
+\jss environment required very little code. As start make the Gym environment,
+after this define a \nn (shown in Figure \ref{fig:neuralnetwork}),
+then define a \rl agent providing a policy and the \nn and at last fit the
+agent on the environment.
 
 \input{./fig/model.tex}
 
-Starting the experiment, we first ran a FIFO scheduler (First-In-First-Out,
-basically a queue) in the environment. The makespan after this run was 5724
-and the final reward was -5.80 and the average reward was 0.40. After this
-general Q-learning and the deep \rl algorithms mentioned above were tried.
-There were no results due to various errors, which will be discussed in detail
-in Section \ref{sec:discussion}.
+Starting the experiment, a FIFO scheduler in the environment was run. The
+makespan after this run was 5724 and the final reward was -5.80, and the
+average reward was 0.40. After this general Q-learning and the deep \rl
+algorithms mentioned above were tried. There were no results due to various
+errors, which will be discussed in detail in Section \ref{sec:discussion}.
