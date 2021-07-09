@@ -1,14 +1,30 @@
 \chapter{Discussion}\label{sec:discussion}
 
-This thesis, like every other thesis, has its achievements and shortcomings.
-These aspects of the thesis are discussed in this section. First, the
-achievements that are gained are summed up, and after this, the shortcomings
-are discussed. The obtained results are discussed and it is reflected on the
-methodology.
+This thesis has its achievements and shortcomings. These aspects of the thesis
+are discussed in this section. First, the achievements that are gained are
+summed up, and after this, the shortcomings are discussed. The obtained
+results are discussed and it is reflected on the methodology.
 
 \section{Achievements}
 
-The first experiment has successfully shown that meta-learning improves
+The first experiment was recreating results from the \mrlco research. In this
+research, only the latency results are shown. A comparison can not be made
+with their results. It can however be compared to the results from our data.
+These results are different. First, the average reward of the \mrlco data
+fluctuates much more. Second, the meta-learning models do not converge at the
+same optimum. Using the Euro-Argo data, the models do actually convege at the
+same average reward. The cause for this difference in results might be that
+something has gone wrong with the \mrlco data. To check robustness, the data
+was split in two batches. There were 19 datafolders, so batch 1 was folder
+0-9 and batch 2 10-18. This did not work at first, because the meta batch size
+parameter was set to 10. This does not work when there are only 9 datafolders.
+To let it work, the meta batch size was set to 9. This might have had
+influence on the meta-learning model training on the second batch, but should
+not have had influence on the other meta-learner. Another cause for this
+difference could be that the batch size of \mrlco was 10 datafolders, while
+the batch size of the Euro-Argo data was 15 folders.
+
+The second experiment has successfully shown that meta-learning improves
 learning speed and reduces retraining time. In Table \ref{table:exectime}, it
 is shown that the execution time of policy and environment is the same for the
 first and second run, meaning that running 2000 iterations for both models has
@@ -31,7 +47,8 @@ the Euro-Argo data in fewer iterations than without meta-learning. It even
 learns fast despite the reward starting much lower than the reward of the
 first batch. Learning quicker with different data shows robustness. The model
 can work with different data and thus learns quicker to work in dynamic
-environments.
+environments. It has not yet been shown in prior research that \mrlco works
+well on other data.
 
 Although the reward on the Euro-Argo data fluctuates less than the \mrlco
 data, the return value of the Euro-Argo has a larger spread, i.e. the
@@ -39,27 +56,22 @@ difference between the maximal return value and the minimal return value, see
 Figure \ref{fig:return}. A reason to explain this difference between the
 \mrlco data and the Euro-Argo data is not found.
 
-% todo: talk about second experiment?
-
-
-The first achievement was the successful converint of the Euro-Argo log
-data to the Taillard specification and the \DAG data. Even though the \DAG
-data provided by the \mrlco model had some quirks and was not as described how
-it should be, it was managed to convert the Euro-Argo data so that it works with the
-\mrlco model. The conversion provided insights into the many aspects of an
-instance for job scheduling. Many parameters were available to change the \DAG
-data and change the job flow accordingly.
-
 
 \section{Shortcomings}
 
 During the experiments it was not managed to finish all experiments that were
 planned. The results are not the expected results from the start of the
-research project. Most of the shortcomings that led to not achieving the
-intended results are due to the models that did not meet the expectations on
-standardization and clear documentation. Converting the data for every model
-that would be evaluated was not feasible in the amount of time for this
-project.
+research project. The second experiment, described in Section \ref{exp:gym},
+did not deliver results. This was due an incompatibility between the
+\code{jssenv} environment and the \code{keras-rl} package, which could not be
+fixed due to time constraints. The incompatibility was that \code{jssenv}
+delivered a multidimensional action space, while \code{keras-rl} could only
+work in 1D action spaces, i.e. a list of possible action. Flattening the
+multidimensional list into a 1D list did not overcome the problem. Because
+this experiment failed, the comparison between different approach for reducing
+retraining time could not be performed and only meta-learning is reviewed.
+Because the code for the Gym experiment did not work, this thesis could not
+compare multiple \gls{rl}-based schedulers and methods for reducing retraining time.
 
 Another shortcoming of the converting of data is that converting data into
 other formats can also create unfairness in the evaluation. It might be that

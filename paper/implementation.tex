@@ -1,44 +1,49 @@
 \chapter{Implementation}\label{sec:method}
 
-In this chapter, the implementation of the system is described. In this
-thesis, approaches to reduce retraining time of \rlbased schedulers are
-compared. The approaches are compared against multiple \rlbased schedulers to
-evaluate how well the approaches work on reducing retraining time.
+In this chapter, the implementation of the system is described. Approaches to
+reduce retraining time of \gls{rl}-based schedulers are compared in this
+thesis. The approaches are compared against multiple \gls{rl}-based schedulers
+to evaluate how well the approaches work on reducing retraining time.
+Therefor, firstly the workflow of the experiments is described. Secondly, the
+software and hardware for the experiments is described (§\ref{sec:setup}).
+Lastly the data and its usage are described in Section \ref{sec:data}.
 
-Firstly, the workflow of the experiments is described. Secondly, the software
-and hardware for the experiments is described (§\ref{sec:setup}). Lastly the
-data and its usage are described in Section \ref{sec:data}.
+\section{Methodology}
 
-\section{Workflow}
+To address the research questions and fill the gaps described in Section
+\ref{sec:gap} two experiments are composed. Related work was required for the
+set up of the experiments. The methodology for discovering related work was
+explained in Section \ref{sec:scope}. The state-of-the-art meta-learning model
+and other state-of-the-art \gls{rl} models were selected from literature to
+compare the approaches for reducing retraining time. At first, these methods were
+assessed on the number of iterations it takes to converge, as done in the
+OpenAI Gym. Thereafter, the methods for reducing retraining time were
+incorporated and the state-of-the-art \gls{rl} models were evaluated again.
+The robustness was evaluated based on the new learning time and handling
+dynamics in the environment. Lastly, indicators that indicate robustness or
+reducing retraining time are sought. To compare the methods, they are trained
+on the same data. Because all methods expect the data to be in a different
+format, the data had to be converted. The conversion of the data is described
+in section \ref{sec:data}.
 
-Two approaches are taken to address the research questions. The three
-sub-questions required review of literature to answer the sub-questions. The
-methodology to discover literature is described in Section \ref{sec:scope}.
-After literature review, the state-of-the-art meta-learning model and other
-state-of-the-art \rl models were selected to assess robustness. The data had
-to be converted into the desired data format to run the models. The
-methodology of converting this data is described in Section \ref{sec:data}.
-After data was converted, the algorithms were run in their specific
-environments. Setting up the environments is described in Section
-\ref{sec:setup}.
 
+\section{Hardware and Software Requirements}\label{sec:setup}
 
-\section{Hardware and Software Specification}\label{sec:setup}
-
-This section explains the hardware and software setup and configuration used
-for the research. Firstly the hardware used is described, and after the
-hardware some vital software and its usage is described. The experiments were
-run on Workstation 8 provided by the Robotics Lab at the University of
-Amsterdam. Workstation 8 is an Alienware Aurora R9 1.0.4 machine, with an
-Intel i9-9900 (16 threads) CPU running at 5.000 GHz, and a NVidia 2080 Ti (11
-GB) GPU with CUDA 10 and driver 415. The operating system is Ubuntu 18.04.4.
-All algorithms were implemented in the Python programming
-language\footlink{python.org}. A virtual Python environment was created for
-every experiment to prevent versioning issues between dependencies. This also
-allowed us to run a different Python version per algorithm. The tool used for
-creating and managing virtual Python environments is called
-\code{pyenv}\footlink{github.com/pyenv/pyenv}. An example of setting up a
-virtual environment:
+This section explains the hardware and software requirements for the
+implementation. Although the experiments might work in other environments, the
+results will be the same if using the same requirements. Firstly the hardware
+used is described, and after the hardware some vital software and its usage is
+described. The experiments were run on Workstation 8 provided by the Robotics
+Lab at the University of Amsterdam. Workstation 8 is an Alienware Aurora R9
+1.0.4 machine, with an Intel i9-9900 (16 threads) CPU running at 5.000 GHz,
+and a NVidia 2080 Ti (11 GB) GPU with CUDA 10 and driver 415. The operating
+system is Ubuntu 18.04.4. All algorithms were implemented in the Python
+programming language\footlink{python.org}. A virtual Python environment was
+created for every experiment to prevent versioning issues between
+dependencies. This also allowed us to run a different Python version per
+algorithm. The tool used for creating and managing virtual Python environments
+is called \code{pyenv}\footlink{github.com/pyenv/pyenv}. An example of setting
+up a virtual environment:
 
 \begin{verbatim}
 $ pyenv install 3.7.10
@@ -59,10 +64,10 @@ Frequently used Python packages in scientific computing are the following:
 NumPy, Scipy, Keras, Tensorflow and PyTorch\footnotemark. NumPy and SciPy
 provide an API for scientific computing and a solid multidimensional array
 object. The other three provide a back-end for creating well-optimised \ml
-algorithms, especially for \nn. Another software project used extensively with
+algorithms, especially for \glspl{nn}. Another software project used extensively with
 this thesis is the OpenAI Gym \cite{gym2016}. Gym is a package for developing
 and comparing reinforcement learning algorithms. It provides access to many
-environments to develop a \rl algorithm on.
+environments to develop an \gls{rl} algorithm on.
 
 \footnotetext{Their respective home pages: \link{numpy.org}, \link{scipy.org},
 \link{keras.io}, \link{tensorflow.org} and \link{pytorch.org}.}
@@ -73,8 +78,8 @@ environments to develop a \rl algorithm on.
 The supervisors provided four datasets at the start of the thesis. The data is
 log data from the Euro-Argo project\footlink{euro-argo.eu/}. The datasets
 described received messages in intervals of one or ten minutes. The four
-datasets provided 43,200, 182,283, 4,320 and 28,312 rows of data, which sums
-up to 258,118 rows of data in total. The datasets all had five columns: the
+datasets provided 43,200, 182,283, 4,320 and 28,311 rows of data, which sums
+up to 258,117 rows of data in total. The datasets all had five columns: the
 start time, the transfer time, request number, byte count and completion
 status. An overview of the datasets is provided in Table \ref{table:data}.
 
@@ -93,7 +98,7 @@ found in Appendix \ref{app:dataset}.
 
 \input{./fig/table-files.tex}
 
-\subsection{Converting to other data formats}
+\subsection{Data Format Conversion}
 
 The Euro-Argo dataset was not compatible with most models. It is not
 compatible with most models because it is not a \jss dataset. The data are
@@ -105,54 +110,53 @@ tasks. In the following two sections, two conversions are discussed.
 
 \subsubsection{Directed Acyclic Graph}\label{sec:dag}
 
-The first format in which the data was converted was a \DAG. Following the
-example of the provided data by the model that uses \DAG data\footnotemark,
-the Euro-Argo data was converted to a \DAG using
-DAGGEN\footlink{github.com/frs69wq/daggen}. DAGGEN is a command line tool that
-generates a \DAG usable by scheduling algorithms. It has a number of
-parameters; \code{n} ($n$) is the number of nodes, \code{mindata} ($D_{min}$)
-is the minimum size of processed data, \code{maxdata} ($D_{max}$) is the
-maximum size of processed data, \code{density} ($d$) determines the numbers of
-dependencies between tasks, \code{ccr} ($ccr$) the communication to
-computation ratio and \code{fat} ($fat$) the width of the \DAG, i.e. the
-maximum number of tasks that can be executed concurrently. Because the
-Euro-Argo data was originally not \jss data but log data of requests, the
-converted data used parameters and other aspects from the example data. In the
-example data, all $n$ values were in the range of 1 to 50. The $n$ values were
-determined by the byte count value, which was scaled to be in $[1, 50]$. Ten
-outliers were removed to get the mean $n$ closer to the example mean $n$. The
-$D_{min}$ and $D_{max}$ were generated from the transfer time values. The
-other three parameters, $d$, $ccr$, and $fat$, were randomly chosen. The
-distribution of these random values followed the distribution of the parameter
-values found in the example data. For $d$ this was a uniform distribution
-$[4, 10]$, for $ccr$ it was a uniform distribution in $[3, 6]$ and for $fat$
-it was a uniform distribution in $[4, 9]$. There was one other parameter, the
-regularity, which was always $0.5$ in the example graphs. An example of a
-generated DAGGEN command is the following: \code{daggen -{}-dot -n 4
--{}-mindata 2656 -{}-maxdata 2658 -{}-density 0.4 -{}-ccr 0.5 -{}-fat 0.6
--{}-regular 0.5 -o graphs/4-2657.gv}. The generated graph file from this
-command is shown in Figure \ref{fig:dag}. It can be seen in Figure \ref{fig:dag}
-that the tasks on the lines without an arrow (\code{->}) contain an attribute
-\code{expect\_size}. This can not be added with the DAGGEN tool and is
-probably added by the authors of the model that uses this data. We noticed
-that the expected size is 2.00, 2.50, or 3.33 times smaller than the size
-attribute of that task. The distribution was almost uniform: 16500 times a
-factor of 2, 16820 times a factor of 2.50, and 16680 times a factor of 3.33.
-The expected size was thereafter integrated using the factors as described
-above.
+\begin{sloppypar}
 
-\footnotetext{The model called metaRL-offloading uses DAG data. The example
-data can be found here: \urlmetadata.}
+    The first format in which the data was converted was a \DAG. Following the
+    example of the provided data by the model that uses \DAG data\footnote{The
+    model called metaRL-offloading uses DAG data. The example data can be
+    found here: \urlmetadata.}, the Euro-Argo data was converted to a \DAG
+    using DAGGEN\footlink{github.com/frs69wq/daggen}. DAGGEN is a command line
+    tool that generates a \DAG usable by scheduling algorithms. Because the
+    Euro-Argo data was originally not \jss data but log data of requests, the
+    converted data used parameters and other aspects from the example data.
+    The distribution of all parameters at the example data was also used on
+    the new data. For the $D_{min}$ and $D_{max}$ parameters, the transfer
+    time from the Euro-Argo data is used. An example of a generated DAGGEN
+    command is the following: \texttt{daggen -{}-dot -n 4 -{}-mindata 2656
+    -{}-maxdata 2658 -{}-density 0.4 -{}-ccr 0.5 -{}-fat 0.6 -{}-regular 0.5
+    -o graphs/4-2657.gv}. The generated graph file from this command is shown
+    in Figure \ref{fig:dag}. The only two parameters that inherits their value
+    from the Euro-Argo data are \code{mindata} and \code{maxdata}. As
+    mentioned, the other parameters followed the same distribution as the
+    example data from \gls{mrlco}. The commands for finding the distributions
+    of the parameters are listed in \ref{app:mrlco}. It can be seen in Figure
+    \ref{fig:dag} that the tasks on the lines without an arrow (\code{->})
+    contain an attribute \code{expect\_size}. This can not be added with the
+    DAGGEN tool and is probably added by the authors of the model that uses
+    this data. We noticed that the expected size is 2.00, 2.50, or 3.33 times
+    smaller than the size attribute of that task. The distribution was almost
+    uniform: 16500 times a factor of 2, 16820 times a factor of 2.50, and
+    16680 times a factor of 3.33. The expected size was thereafter integrated
+    using the factors as described above.
+
+\end{sloppypar}
+
 
 \input{./fig/dag.tex}
 
+The pseudocode for converting the Euro-Argo data to \gls{dag} data is shown
+and described in Figure \ref{fig:pseudo}.
+
+\input{./fig/pseudo.tex}
 
 \subsubsection{Taillard Specification}\label{sec:taillard}
 
 Other models worked with the popular OpenAI Gym environment. The Gym
 environment allows people to build custom environments to make it possible to
-test \rl algorithms in other kinds of environments. Gym itself provides
-game-like environments. The interface for Gym is very minimal, as typical \rl
+test \gls{rl} algorithms in other kinds of environments. Gym itself provides
+game-like environments. The interface for Gym is very minimal, as typical
+\gls{rl}
 algorithms have simple interaction with the environment. Most importantly, it
 exposes the following methods and attributes: \code{env.reset()} which resets
 the environment and returns the start state, \code{env.observation\_space}

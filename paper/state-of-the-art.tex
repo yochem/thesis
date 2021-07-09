@@ -1,24 +1,25 @@
 \chapter{State of the Art}\label{sec:state-of-the-art}
 
-In this chapter, related work is discussed. In Section \ref{sec:scope}, the
-scope of the thesis is defined and the methodology of selecting related work is
-described. After this related work on the topics of \rlbased schedulers,
-assessing the robustness of \rl methods and approaches for reducing retraining
-time are discussed. Lastly, the gap in the related work is analysed.
+In this chapter, the current situation and state-of-the-art models are
+discussed. In Section \ref{sec:scope}, the scope of the thesis is defined and
+the methodology of selecting related work is described. After this related
+work on the topics of \gls{rl}-based schedulers, assessing the robustness of
+\gls{rl} methods and approaches for reducing retraining time are discussed.
+Lastly, the gap in the related work is analysed.
 
 
 \section{Scope and Methodology}\label{sec:scope}
 
-The scope of this thesis is specifically \rlbased schedulers in cloud
+The scope of this thesis is specifically \gls{rl}-based schedulers in cloud
 environments. In Section \ref{sec:rl}, it is explained why this thesis only
-focuses on \rlbased schedulers, not schedulers based on other forms of
-\ml.
+focuses on \gls{rl}-based schedulers, not schedulers based on other forms of
+\gls{ml}.
 
 Comparing different methods and models is the main task in this thesis. When
 comparing methods of models, a justified method of assessing methods and models
 is required. It is also important that the comparison is made on the
-indicators on which the performance depends. These are called the \kpis. The
-\kpis of \rlbased schedulers are established from related literature.
+indicators on which the performance depends. These are called the \glspl{kpi}. The
+\glspl{kpi} of \gls{rl}-based schedulers are established from related literature.
 
 The methodology of the research in related work is twofold. Most of the work
 of others is discovered via Google Scholar\footlink{scholar.google.com}. This
@@ -31,59 +32,66 @@ reading literature referenced in earlier found related work.
 
 \section{Related Work}
 
-\subsection{Reinforcement Learning}\label{sec:rl}
+\subsection{Reinforcement-Learning-based Schedulers}\label{sec:rl}
 
 Reinforcement learning, as it does not rely on labeled data and its
 interactive learning process, gets widely used in scheduling. This difference
 is very well explained in `the most popular artificial intelligence textbook
-in the world'\footnotemark, \citeA{russell2010}. Their explanation of \rl is
+in the world'\footnotemark, \citeA{russell2010}. Their explanation of \gls{rl} is
 summarised in the following paragraph.
 
 \footnotetext{According to \href{\urltor}{this blog}, but also shown on the
 homepage of the book (\url{http://aima.cs.berkeley.edu/}).}
 
 Reinforcement learning is one of the three basic paradigms in machine
-learning, along with supervised learning and unsupervised learning. \rl is
+learning, along with supervised learning and unsupervised learning. \gls{rl} is
 different from the other two paradigms. Supervised learning and unsupervised
 learning have a shared property: the need for data. Supervised learning needs
 annotated data, various inputs and desired outputs are given, and the
 algorithm learns a function to get as close to the wanted outputs as possible
 given the inputs. With unsupervised learning, a model is forced to build an
-internal representation of the world by mimicking the data. \rl is different
+internal representation of the world by mimicking the data. \gls{rl} is different
 because it does not depend on data, but rather learns from a feedback loop of
 rewards or reinforcements. It typically consists of one agent, a set of
 actions and a set of states. The agent accumulate rewards by performing series
 of actions in the environment. See Figure \ref{rl-diagram} for a flowchart of
-reinforcement learning. In many complex environments \rl can be the most
+reinforcement learning. In many complex environments \gls{rl} can be the most
 feasible method for training models because there might be little data
 available or the environment is too complex to model \cite{russell2010}. For
-the reason that \rl does not need large amounts of data but an environment to
+the reason that \gls{rl} does not need large amounts of data but an environment to
 interact via actions and rewards, lots of work has been done with
-investigating \rlbased scheduling approaches.
+investigating \gls{rl}-based scheduling approaches.
 
 \input{./fig/rl-diagram.tex}
 
-Many reinforcement learning algorithms are used in state-of-the-art \rlbased
-schedulers. Three different state-of-the-art \rl schedulers are described. The
-first scheduler is DeepRM, presented in \citeA{mao2016}. This scheduler is
-based on deep reinforcement learning with policy representation via a \dnn.
-The algorithm learns by performing gradient-descent on the policy parameters
-using the REINFORCE algorithm from \citeA{sutton1999}. For the state
-representation, a 2-D image is used to capture the status of resources and
-jobs. The second state-of-the-art scheduler is proposed in \citeA{zhang2020}
-and also trains a policy network, but in this algorithm, the network is trained
-using \ppo, an actor-critic algorithm. Unlike DeepRM, the model from
-\citeA{zhang2020} is not hard bounded by the instance size
-\cite[p.~5]{zhang2020}, making it more flexible and robust.
+Many reinforcement learning algorithms are used in state-of-the-art
+\gls{rl}-based schedulers. Three different state-of-the-art \gls{rl}
+schedulers are described. The first scheduler is DeepRM, presented in
+\citeA{mao2016}. This scheduler is based on deep reinforcement learning with
+policy representation via a \gls{dnn}. The algorithm learns by performing
+gradient-descent on the policy parameters using the REINFORCE algorithm from
+\citeA{sutton1999}. For the state representation, a 2-D image is used to
+capture the status of resources and jobs. The second state-of-the-art
+scheduler is proposed in \citeA{zhang2020} and also trains a policy network,
+but in this algorithm, the network is trained using \ppo, an actor-critic
+algorithm. Unlike DeepRM, the model from \citeA{zhang2020} is not hard bounded
+by the instance size \cite[p.~5]{zhang2020}, making it more flexible and
+robust. Lastly, \citeA{wang2020} is a state-of-the-art scheduler, but since it
+uses meta-learning it is discussed in Section \ref{sec:reusing}. In Table
+\ref{rlschedulers}, some results of the related work discussed in this
+paragraph are listed. The results show that all \gls{rl}-based schedulers are
+an improvement on schedulers based on heuristics.
+
+\input{./fig/rlschedulers.tex}
 
 
 \subsection{Evaluation of Reinforcement Learning Models}\label{sec:evaluation}
 
-Finding approaches to effectively assess and compare \rlbased schedulers is a
+Finding approaches to effectively assess and compare \gls{rl}-based schedulers is a
 sub-question of this thesis and, by that, a key factor to answer the research
-question. \rlbased schedulers must be as effective after reducing retraining
+question. \gls{rl}-based schedulers must be as effective after reducing retraining
 time as before the reduction. In the reviewed related work, there was no
-standard found for evaluating \rl models. Work is done in defining standard
+standard found for evaluating \gls{rl} models. Work is done in defining standard
 evaluation methods, but these methods are not yet the industry standard. There
 are three representative metrics adopted by many works. The first evaluation
 is regret. Regret can only be used as a metric when an agent with optimal
@@ -91,17 +99,18 @@ policy can be defined. The difference in received reward for the actions taken
 by the optimal agent and the learning agent is the regret per action. However,
 knowing the optimal policy is not always possible. The second evaluation
 metric is not used much among literature but rather in practice, namely the
-OpenAI Gym. Gym provides well-defined environments that are suitable for \rl
-to learn. A comparison between \rl models is done on their
+OpenAI Gym. Gym provides well-defined environments that are suitable for
+\gls{rl}
+to learn. A comparison between \gls{rl} models is done on their
 leaderboards\footlink{github.com/openai/gym/wiki/Leaderboard}. The metrics are
 the number of episodes before `solve'. Some environments define being solved
 as receiving an average reward threshold over 100 consecutive trials (when a
 model is converged), and other environments have a clear goal which can be
 achieved. Lastly, proposed methods in literature are, for example, a framework
-for evaluating \rl in \citeA{khetarpal2018} and a novel evaluation method in
+for evaluating \gls{rl} in \citeA{khetarpal2018} and a novel evaluation method in
 \citeA{jordan2020}. Both of these are not used often in practice. It can be
 concluded that even though no standard exists, many approaches for evaluating
-\rl models exist and are used.
+\gls{rl} models exist and are used.
 
 
 \subsection{Assessing Robustness of Reinforcement Learning}
@@ -109,7 +118,7 @@ concluded that even though no standard exists, many approaches for evaluating
 To select a method for reducing retraining time, it is vital to assess the
 robustness of a model. Robustness is the ability to cope with dynamic
 environments and working well in noisy environments. The goal of this thesis is
-to compare methods for reducing the retraining time of \rlbased schedulers. If
+to compare methods for reducing the retraining time of \gls{rl}-based schedulers. If
 a model is robust, it needs less time of adapting models to the new
 environment, which results in less retraining time. Because less
 retraining time can be achieved with more robustness, related work on robust
@@ -126,7 +135,8 @@ dynamics in the environment and the ability to simulate the dynamics.
 
 In \citeA{alnima2021} the neuron coverage, i.e. the ratio of the activated
 neurons in a network, is used as a measurement of robustness. This is only
-applicable in \rl methods with neural networks in it, for example \dqn.
+applicable in \gls{rl} methods with neural networks in it, for example
+\gls{dqn}.
 
 Another approach to evaluating robustness is training on data and
 testing on completely other data. By evaluating the difference, the resulting
@@ -151,7 +161,7 @@ taking the dynamics into account. For example, for job schedulers in cloud
 environments, this can be done by dynamically adding and removing resources
 during training. It theoretically helps the agent to learn the knowledge of
 dynamics. Numerous approaches include information about the dynamic aspect of
-the environment in the model. To successfully apply \rl models in dynamic
+the environment in the model. To successfully apply \gls{rl} models in dynamic
 environments, \citeA{wiering2001} proposed to include an a priori model of the
 changing parts in the environment. In \citeA{nagayoshi2013}, a method was
 proposed for detecting environmental changes on which the model can adapt. The
@@ -219,40 +229,42 @@ to new environments. After the first time learning, it requires much less
 iterations to receive the same reward as previous training sessions.
 
 
-\section{Gap Analysis}
+\section{Gap Analysis}\label{sec:gap}
 
 As shown in this chapter, much work is done in optimising job scheduling with
-reinforcement learning. The popularity and convenience of RL algorithm is the
-reason it gets attention in the field of scheduling. The reason of our work
-choice to investigate reducing retraining time is because conventional \rl is
-not robust enough to deal with dynamic scheduling scenarios. Many
-state-of-the-art schedulers using \rl outperform heuristic-based methods with
-great distance. The downside of the \rlbased schedulers is that they lack the
-ability to cope with the dynamics in the environment. Once dynamics occur in
-the environment, the \rl model has to be retrained, which is time consuming.
+reinforcement learning. The popularity and convenience of \gls{rl} is the
+reason it gets attention in the field of scheduling. Although much work is
+done, there are still gaps in previous research. The reason to investigate
+reducing retraining time is because conventional \gls{rl} is not robust enough
+to deal with dynamic scheduling scenarios. Many state-of-the-art schedulers
+using \gls{rl} outperform heuristic-based methods with great distance. The
+downside of the \gls{rl}-based schedulers is that they lack the ability to
+cope with the dynamics in the environment. Once dynamics occur in the
+environment, the \gls{rl} model has to be retrained, which is time consuming.
 Most of them are trained for a specific instance and did not train for
-dynamics. Including these aspects in training, along
-with methods for reducing retraining time or adding in robustness, can help
-reduce retraining time. Although there exist methods for reducing the
-retraining time, these methods have not been compared in \jss environments,
-trained on the same data. A comparison is needed to help with selecting a
-well-suited method. \kpis have to be found on which these reduce methods can
-be selected. There seems like there is not yet a standard for assessing the
-robustness of models, but combining multiple can have the desired result. To
-summarise, the gaps in related work are the following:
+dynamics. Including these aspects in training, along with methods for reducing
+retraining time or adding in robustness, can help reduce retraining time.
+Although there exist methods for reducing the retraining time, these methods
+have not been compared in \jss environments, trained on the same data. A
+comparison is needed to help with selecting a well-suited method. \glspl{kpi}
+have to be found on which these reduce methods can be selected. A standard for
+assessing the robustness of models has not been found, but combining multiple
+can have the desired result. To summarise, the gaps in previous done research are the
+following:
 \begin{itemize}[noitemsep]
-    \item Conventional \rl is not robust enough to deal with dynamic
+    \item Conventional \gls{rl} is not robust enough to deal with dynamic
         scheduling scenarios;
-    \item \rlbased schedulers lacking robustness require more retraining time,
+    \item \gls{rl}-based schedulers lacking robustness require more retraining time,
         which takes time, costs resources itself, costs money and contributes
         to global warming;
     \item There are no standards for assessing robustness of a model, but
         approaches from related literature can also be used here to assess
-        the robustness.
+        the robustness;
     \item There has not been a comparative study of methods for adding in
-        robustness of reducing retraining time in the same conditions;
+        robustness of reducing retraining time in the same conditions.
 \end{itemize}
 This thesis will fill in the gap by providing a standardised method for
-selecting approach to reduce retraining time. It does this by having a solid
-approach for assessing robustness and overall performance of \rlbased
-schedulers.
+selecting approach to reduce retraining time. This is done by having a solid
+approach for assessing robustness and overall performance of \gls{rl}-based
+schedulers. The following chapter explains the methodology of filling in the
+gaps.

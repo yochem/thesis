@@ -1,20 +1,22 @@
 \chapter{Introduction}\label{sec:intro}
 
-\setcounter{page}{1}
+\pagenumbering{arabic}
 
-The cloud is everywhere. All companies in the tech big 5, i.e. Facebook,
+The cloud is everywhere. All companies in the tech big 5, i.e. FaceBook,
 Apple, Amazon, Netflix and Google, use the cloud extensively and offer many
-cloud services to their users. Movies are not bought anymore, but rather
+cloud services to their users. Movies are not bought any more but rather
 streamed. New MacBooks do not come with much storage. Instead, each purchase
-includes some storage in Apple's cloud. How are the movies and pictures stored
-in the cloud? What even is the cloud? The cloud is a network of many
-interconnected computers, the nodes in the network, providing resources.
-Oftentimes these nodes are abstracted as just resources. The utilisation of
-these resources need to be managed, which is done by schedulers. Efficient
-schedulers are essential, because they directly influence the cloud platform by
-having a high resource utilization rate and end-users by having a good quality
-of service. This thesis investigates methods for improving the robustness of
-schedulers.
+includes some storage in Apple's cloud. But what even is the cloud? The cloud
+is a network of many interconnected computers, the nodes in the network,
+providing resources. Oftentimes these nodes are abstracted as just resources.
+The utilisation of these resources needs to be managed, which is done by
+schedulers. Efficient schedulers are essential because they directly
+influence the cloud platform by having a high resource utilization rate and
+end-users by having a good quality of service. Due to the complexity of
+current cloud systems, humans are not able to write efficient schedulers based
+on heuristics. To overcome this, researchers propose learning to schedule using
+\rl algorithms. This thesis investigates how methods for improving the
+robustness of \rl schedulers can be selected.
 
 
 \section{Background}
@@ -25,48 +27,48 @@ many computers that provide resources, for example storage and computational
 power. These computers communicate via standard network protocols locally.
 Data centres thus contain many computers that provide computational resources.
 The four significant advantages of using data centres for large computational
-tasks are the following: 1) Distributed. Data centres are the ideal
-environment for running distributed software, because the structure of data
-centres offers much distributed scalability; 2) Robustness. When a component
+tasks are the following: (1) Distributed. Data centres are the ideal
+environment for running distributed software because the structure of data
+centres offers distributed scalability; (2) Robustness. When a component
 breaks, the scheduler could migrate the task to other available resources, and
 the broken component can be replaced while the application is still running;
-3) Configurable. The resources can be selected based on computation
+(3) Configurable. The resources can be selected based on the computation
 requirements of the task. Providing many different configurations improve the
-utilisation rate and efficiency of cloud platforms; 4) Scalability. Data centres
-offer virtualised resources and are thus easier to scale. Availability of
-resources can easily be scaled.
+utilisation rate and efficiency of cloud platforms; (4) Scalability. Data
+centres offer virtualised resources and are thus easier to scale.
 
-An additional benefit of the cloud is how companies pay for the resources,
-i.e. pay-as-you-go. Pay-as-you-go means that companies never pay for idle
-resources and can easily scale up to use more resources when needed. By
-building and sharing large data centres, companies can effectively achieve the
-economies of scale principle for needed resources. Economy of scales reduces
-the cost of the resources, but also the maintenance costs.
+An additional benefit of the cloud is how client companies pay for the
+resources, i.e. pay-as-you-go. Pay-as-you-go means that companies never pay
+for idle resources and can easily scale up to use more resources when needed.
+By building and sharing large data centres, client companies can effectively
+achieve the economies of scale principle for needed resources. Economy of
+scales reduces the cost of the resources and maintenance.
 
 
 \subsection{Job Scheduling}\label{sec:scheduling}
 
 Imagine cloud systems as described in Section \ref{sec:cloud}. These systems
-have many tasks, or as in this thesis called jobs, that need to be executed to
-scheduler. These jobs vary a lot in duration time and required resources. To
-illustrate, given that the cloud environment provides a back-end for a
-website. A job could be one of the following: Serving the right HTML page to a
-visiting user, compressing user-uploaded images, spam filtering, detecting
-anomalies in user logins or many other types of jobs that need to be executed
-to provide a functioning website. The scheduler allocates jobs over
-many resources. Optimally allocating the jobs is important for cloud
-environments because efficiently using resources could improve the resource
-utilisation rate and the quality of service.
+have many tasks, or as in this thesis called jobs, that need to be executed in
+a schedule. These jobs vary a lot in duration time and required resources. To
+illustrate, imagine that the cloud environment provides a back end for a
+website. Jobs that need to be done on a back-end server include serving the
+right HTML page to visiting users, compressing user-uploaded videos, spam
+filtering, detecting anomalies in user logins and more. The scheduler
+allocates these jobs over many resources. Optimally allocating the jobs is
+important for cloud environments, because efficiently using resources could
+improve the resource utilisation rate, i.e. every resource is used
+efficiently, and the quality of service, i.e. the website functions as
+expected for the user.
 
 What is scheduling efficiency and how can schedulers be efficient? There are
 many metrics on which optimization can be done to improve the efficiency of a
 scheduler. For example, minimizing job slowdown time, minimizing average
-completion time, maximizing throughput (jobs per time unit) or minimizing
-total completion time (the makespan). Schedulers are created to be optimised
-on one or more of these aspects, varying the importance. Unfortunately, the
+\jct, maximizing throughput (jobs per time unit) or minimizing
+total \jct (the makespan). Schedulers are created to be optimised
+on one or more of these aspects. Unfortunately, the
 optimization of schedulers is complex. It is a well-known problem in computer
 science because of its NP-hardness. The next paragraph explains what it means
-to be a NP-hard problem and why job scheduling is NP-hard.
+to be an NP-hard problem and why job scheduling is NP-hard.
 
 
 \subsubsection{NP-Hard}
@@ -74,30 +76,33 @@ to be a NP-hard problem and why job scheduling is NP-hard.
 NP-hardness is a term used in the P versus NP problem. This problem is one of
 the seven Millennium Prize Problems \cite{carlson2006} and still unsolved. The
 P versus NP problem is about computational complexity, an approach to
-categorizing problems based on `how hard' they are. Computational problems
+categorize problems based on `how hard' they are. Computational problems
 have two complexity aspects: the complexity to solve the problem and the
-complexity to verify if the solution to the problem is correct. The question
-is, if the solution to a given problem can be verified quickly (in polynomial
-time), is there an algorithm that can find the solution quickly? Problems that
-can be \emph{solved} in polynomial time are in the P class. Problems that can
-be \emph{verified} in polynomial time are in the NP (nondeterministic
-polynomial time) class. If these classes entirely overlap, i.e. every problem in
-P is also in NP, and every problem in NP is also in P, then P equals NP. Many
-computer scientists believe this is not the case for all problems
-\cite{rosenberger2012}. Believed is that there are problems that can be
-verified quickly but not solved quickly, called NP-hard problems. A
-well-known NP-hard problem is the Sudoku puzzle, especially larger ones
-\cite{yato2003}.
+complexity to verify the solution. The question is, if the solution to a given
+problem can be verified quickly (in polynomial time), is there an algorithm
+that can find the solution quickly? Problems that can be \emph{solved} in
+polynomial time are in the P class. Problems that can be \emph{verified} in
+polynomial time are in the NP (nondeterministic polynomial time) class. If
+these classes entirely overlap, i.e. every problem in P is also in NP, and
+every problem in NP is also in P, then P equals NP. Many computer scientists
+believe this is not the case for all problems \cite{rosenberger2012}. Believed
+is that there are problems that can be verified quickly but not solved
+quickly, called NP-hard problems. A well-known NP-hard problem is the Sudoku
+puzzle, especially larger ones \cite{yato2003}. Sudokus can be verified
+quickly, it only needs to be checked if each row, column and subgrid
+contain all digits 1-9. If this is the case, the solution is valid. It however
+is much more difficult to come to the solution, and an efficient approach has
+not yet been found.
 
-Job scheduling is a generalised version of the travelling salesperson problem.
-The problem is as follows: ``Given a list of cities and the distances between
-each pair of cities, what is the shortest possible route that visits each city
-exactly once and returns to the origin city?'' \cite{flood1956}. In this
-problem, the cities are the resources, and the salesman is the job.
-
-Job scheduling is NP-hard because it can be derived from the Graph Coloring
-Problem, as done in \citeA{karp1972}. The graph colouring problem is an NP-hard
-problem itself.
+This problem of verifying being quicker than solving is also the case in job
+scheduling. Job scheduling is a generalised version of the travelling
+salesperson problem. The problem is as follows: ``Given a list of cities and
+the distances between each pair of cities, what is the shortest possible route
+that visits each city exactly once and returns to the origin city?''
+\cite{flood1956}. In this problem, the cities are the resources, and the
+salesperson is the job. Job scheduling is NP-hard because it can be derived from
+the Graph Coloring Problem, as done in \citeA{karp1972}. The graph colouring
+problem is an NP-hard problem itself.
 
 
 \subsection{Heuristics-based Scheduling Methods}\label{sec:situ}
@@ -105,85 +110,103 @@ problem itself.
 Many cloud job schedulers that are still used today are explicitly developed
 for the system it manages, based on simple heuristics and fine-tuned by trial
 and error. Tuning job schedulers is a tedious task. Repeating work of adjusting
-parameters and testing is very time-consuming. Current cloud schedulers are
+parameters and testing is time-consuming. Current cloud schedulers are
 developed for ease of understanding. The schedulers generalize,
-i.e. they perform the same job regardless of whether the workload is heavy or
-light \cite{mao2019}. Three classic (non-\ai) algorithms are explained below
+i.e. they perform the same job regardless if the workload is heavy or
+light \cite{mao2019}. Three classic (non-\gls{ai}) algorithms are explained below
 to provide an idea of the simplicity of the non-\ai schedulers.
-
 \begin{enumerate}
-\item First in, first out (FIFO): This algorithm treats the awaiting jobs like
-    a queue. All available resources are filled, and when a resource is
-        available it is assigned to the task first in queue.
-\item Shortest Job First (SJF): This algorithm sorts awaiting jobs based on
-    increasing order of an estimation of the completion time. It works the
-        same as FIFO for workload: when a resource is free, it is assigned a
-        new job from the queue. It can be described as a priority queue.
+\item \gls{fifo}: This algorithm treats the awaiting jobs like a queue. All
+    available resources are filled, and when a resource is available it is
+        assigned to the task first in the queue.
+    \item \gls{sjf}: This algorithm sorts awaiting jobs based on increasing
+        order of an estimation of the \gls{sjf}. It works the same as
+        \gls{fifo} for workload: when a resource is free, it is assigned a new
+        job from the queue. It can be described as a priority queue.
+\item Round Robin (RR): This algorithm interrupts long-running jobs
+    periodically in order to let short jobs finish. The selection for the next
+        job normally is \gls{fifo}.
 \end{enumerate}
-
-The above-explained algorithms are highly intuitive resource managers and not
+The above-explained algorithms are highly intuitive job schedulers and not
 fine-tuned for different workloads. Due to the lack of flexibility of these
 non-\ai algorithms, there are also situations in which their scheduling
-efficiency and precision will have deviation. More specifically, FIFO possibly
+efficiency and precision will have deviation. More specifically, \gls{fifo} possibly
 leads to multiple jobs with a long duration time, blocking all other jobs till
 they finish. The disadvantage of SJF is that it can cause starvation, meaning
-that short jobs are constantly added and will never be executed.
+that short jobs are constantly added, with long-running jobs never executed.
+The disadvantage of RR is that it is very important, and hard, to select the
+period for interrupting jobs. It also does not work for jobs of the same
+length.
 
 
 \subsection{Machine Learning Based Scheduling Methods}
 
-Currently, schedulers are not capable of handling differences in workload and
-have other shortcomings. There is a need for schedulers capable of handling
-increasingly complex large-scale systems. Due to the shortcomings of current
-non-\ai implementations, research is done in using \ml techniques to learn
-efficient scheduling. This research is discussed in Section
-\ref{sec:state-of-the-art}. Machine learning tends to overfit, and that it
-does not generalize. It might not be flexible. Overfitting is also the case
-with \rlbased schedulers. Schedulers can show undefined behaviour when
-resources are added or removed. Thus, when a change in environment occurs,
-the \rlbased scheduler gets retrained to work in the new environment. If
-retraining has to be done for every environment change, it would spend more
-time retraining than scheduling.
+As explained in the previous section, schedulers currently are not capable of
+handling differences in workload and have more shortcomings. There is a need
+for schedulers capable of handling increasingly complex large-scale systems.
+Due to the shortcomings of current non-\ai implementations, research is done
+on using \ml techniques to learn efficient scheduling. Successes have been
+made in research for using \ml in scheduling, e.g. the Decima \gls{rl}-based
+scheduler improves \jct by 45\% compared to \gls{fifo}
+\cite{mao2019}. Research on \gls{rl}-based schedulers is further discussed in
+Section \ref{sec:state-of-the-art}.
 
 
 \section{Motivation}
 
-Retraining is not ideal and should be prevented as much as possible. The
-disadvantages of it are that retraining\dots
-
+Although the \gls{rl}-based schedulers are efficient in static environments in which
+they are trained, machine learning tends to overfit, i.e. it does not
+generalize and might not be flexible. Overfitting is also the case with
+\gls{rl}-based schedulers. Schedulers can show undefined behaviour when resources
+are added or removed, thus, when a change in the environment occurs, the \gls{rl}-based
+scheduler is trained to work in the new environment. This is called
+retraining. If retraining has to
+be done for every environmental change, it would spend more time retraining than
+scheduling. Retraining is not ideal and should be prevented as much as
+possible. The disadvantages of retraining are that:
 \begin{itemize}[noitemsep]
-    \item[\dots] takes time, in which a sub-optimally working scheduler is
+    \item Retraining takes time, in which a sub-optimally working scheduler is
         still scheduling;
-    \item[\dots] costs computational resources itself, which can not be used
+    \item Retraining costs computational resources itself, which can not be used
         for performing other jobs;
-    \item[\dots] costs money and contributes to global warming. Carbon
-        emission of large \ml models is a real issue which is currently
+    \item Retraining costs money and contributes to global warming. Carbon
+        emission of large \ml models is a real issue that is currently
         researched on \cite{patterson2021};
-    \item[\dots] means that the scheduler is not robust enough. Improving the
+    \item Retraining means that the scheduler is not robust enough. Improving the
         robustness of schedulers can improve the quality of service for an
         end-user, reduce the cost for a company and impact the environment.
 \end{itemize}
+Approaches for overcoming the disadvantages of retraining have been proposed
+and will be discussed in Section \ref{sec:state-of-the-art}.
+These approaches are not yet compared to each other. Providing a method for
+selecting an approach for reducing retraining time can help cloud providers with
+minimizing retraining time.
 
 
 \section{Research Questions}
 
-The goal of this research is to integrate robustness into current
-state-of-the-art \ml based job schedulers. This leads to the following
-research question:
+The goal of this thesis is to propose an approach for selecting methods that
+reduce retraining time of \gls{rl}-based job schedulers. Retraining time is
+the real time it takes to train a \rl model, when it already has trained in a
+similar environment at least once. The methods selected in this thesis reduce
+this retraining time. The retraining time can also be reduced by making a model
+more robust. A model's robustness can be described as its resiliency to
+dynamics in the environment. To find indicators to select methods on, the
+following research question is proposed:
 \begin{quote}
 How to select a method for reducing the retraining time of reinforcement learning
-    based resource schedulers in cloud environments?
+    based job schedulers in cloud environments?
 \end{quote}
 This will be answered by the following sub-questions:
 \begin{enumerate}[noitemsep]
-    \item How can we effectively assess and compare \rlbased methods in job
+    \item How can we effectively assess and compare \gls{rl}-based methods in job
         scheduling?
-    \item What are the indicators to assess the robustness of \rlbased schedulers?
+    \item What are the indicators to assess the robustness of \gls{rl}-based schedulers?
     \item What are the state-of-the-art approaches for reducing retraining time?
 \end{enumerate}
 The goal of this research is to provide indicators for selecting methods that
 reduce retraining time. To find the indicators, it is first needed to assess
-\rlbased schedulers. More robust (also called flexible) \rlbased schedulers
+\gls{rl}-based schedulers. More robust (also called flexible) \rlbased schedulers
 can work with environmental changes and thus need less retraining time.
 Even though the training time does not change, requiring less retraining still
 reduces the overall retraining time. It is also required to know what
@@ -191,31 +214,32 @@ state-of-the-art approaches are for reducing retraining time. Based on
 aspects of state-of-the-art approaches, criteria can be formed to select
 approaches for reducing retraining time.
 
-There are two challenges of the research questions. The first challenge is how
-a method for reducing the retraining time can be selected if there is are no
-indicators to assess robustness of a \rlbased scheduler. Comparing is not
-possible without indicators. The second challenge is to create a testbed that
-can test every arbitrary \rl algorithm on a \jss problem, using the same data.
+The following challenges can occur while answering the research question. The
+first challenge is how a method for reducing the retraining time can be
+selected if there is are no indicators to assess robustness of an
+\gls{rl}-based scheduler. Comparing is not possible without indicators. The
+second challenge is to create a testbed that can test every arbitrary \gls{rl}
+algorithm on a \jss problem, using the same data. If the first challenge
+occurs, new indicators for robustness are searched and used. If the second
+challenge occurs, all \gls{rl} algorithms are tested in an environment
+specifically made for them.
 
 
-\section{Contributions}
+\section{Contributions}\label{contributions}
 
-This thesis seeks to contribute the following to the field of \rlbased
+This thesis seeks to contribute the following to the field of \gls{rl}-based
 schedulers:
 
 \begin{enumerate}[noitemsep]
-    \item This thesis discusses the methods for assessing the performance
-        of \rl models, explain the difference and why some methods might be
-        better. This contributes to the field by helping others select a
-        method of assessing the performance of a \rl model.
-    \item This thesis discusses approaches to assessing the robustness of
-        \rl models. This contributes to the field by introducing the
-        importance of robustness and explaining how a method for adding in
-        robustness can be selected.
-    \item This thesis will contribute the field by listing the
-        state-of-the-art approaches for reducing retraining time. This
-        contributes to the field by helping others to select a method for
-        reducing retraining time.
+    \item Providing an approach to select a method of assessing the
+        performance of an \gls{rl} model. This is done by discussing the methods
+        for assessing the performance of \gls{rl} models. This thesis also
+        explains the difference and why some methods might be better.
+    \item Introducing the importance of robustness and explaining how a method
+        for adding in robustness can be selected. This is done by discussing
+        approaches to assess the robustness of \gls{rl} models.
+    \item Helping others to find methods for reducing retraining time by
+        listing the state-of-the-art approaches.
     \item This thesis will contribute to an approach for selecting
         reinforcement learning-based schedulers on the following indicators:
         the overall performance of the model, the robustness of the model and
@@ -223,11 +247,15 @@ schedulers:
 \end{enumerate}
 
 
-In this thesis related work will first be discussed in Section
-\ref{sec:state-of-the-art}. Thereafter the methodology and implementation of
-the experiments is discussed in Section \ref{sec:method}. Thereafter the
-experiments and their results are described in Section
-\ref{sec:experiments}. After this the results will be discussed in Section
-\ref{sec:discussion} and a conclusion will be drawn in Section
-\ref{sec:conclusion}. This thesis will end with suggestions for future work in
-Section \ref{sec:future-work}.
+\section{Overview Thesis}
+
+In this thesis related work on \gls{rl}, schedulers and robustness in \rl will
+first be discussed in Section \ref{sec:state-of-the-art}. Thereafter the
+methodology of the research, requirements and used data are explained in
+Section \ref{sec:method}. After that section, the experiments and results are
+shown in Section \ref{sec:experiments}. The achievements and shortcomings of
+the experiments are discussed in Section \ref{sec:discussion}. A conclusion
+will be drawn in Section \ref{sec:conclusion} from the experiments and the
+discussion. The thesis will end with suggestions for future work in Section
+\ref{sec:future-work}. The used references and appendix are at the end of the
+document.

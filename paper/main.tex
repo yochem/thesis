@@ -1,13 +1,14 @@
-\documentclass[a4paper, 12pt]{report}
+\documentclass[a4paper,12pt]{report}
 \usepackage{preamble}
 \input{glossary.tex}
 
 \begin{document}
+\pagenumbering{Roman}
 \input{frontpages.tex}
 \input{abstract.tex}
 \tableofcontents
 \printglossaries
-\pagenumbering{arabic}
+\newpage
 \input{introduction.tex}
 \input{state-of-the-art.tex}
 \input{implementation.tex}

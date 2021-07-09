@@ -10,10 +10,8 @@
 \usepackage{geometry}
 % -- end packages for title page
 
-\usepackage{hyperref}
 \usepackage{enumerate}
 \usepackage[bottom]{footmisc}
-\usepackage{apacite}
 \usepackage{caption}
 \usepackage[acronym]{glossaries}
 \usepackage{soul}
@@ -23,18 +21,11 @@
 \usepackage{listings}
 \usepackage{layouts}
 \usepackage{tikz}
+\usepackage{tabularx}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage{apacite}
 
 \usetikzlibrary{arrows, arrows.meta, calc, positioning, quotes, shapes}
-
-
-% todos
-\usepackage{xargs}
-\usepackage[colorinlistoftodos,prependcaption]{todonotes}
-\newcommandx{\note}[2][1=]{
-    \vspace{0.2cm}
-    \todo[inline,linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}
-    \vspace{0.2cm}
-}
 
 \bibliographystyle{apacite}
 
@@ -48,8 +39,8 @@
 \definecolor{frontpage}{RGB}{42,82,103}
 
 \hypersetup{
-  linkcolor  = black,
-  citecolor  = black,
+  linkcolor  = linkcolor,
+  citecolor  = linkcolor,
   urlcolor   = linkcolor,
   colorlinks = true,
 }
@@ -65,14 +56,14 @@
 % should appear right below the main title, in a smaller font.
 % \newcommand{\theTitle}{Reducing Retraining Time of \\ \vspace{0.5cm}
 % Reinforcement Learning Schedulers}
-\newcommand{\theTitle}{Comparing Methods for Reducing Retraining Time in Job
-Scheduling}
+\newcommand{\theTitle}{Selecting Methods for Reducing Retraining Time in
+RL-based Job Scheduling}
 % \newcommand{\theSubTitle}{of Reinforcement Learning Schedulers in Cloud
 % Environments}
 \newcommand{\theSubTitle}{}
 \newcommand{\theAuthor}{Yochem van Rosmalen}
 \newcommand{\theStudentID}{12223247}
-\newcommand{\theSupervisor}{H. Liu MSc. and Dr. Z. Zhao}
+\newcommand{\theSupervisor}{Mr H. Liu MSc. and Dr Z. Zhao}
 \newcommand{\theInstitute}{
 Informatics Institute\\
 Faculty of Science\\
@@ -80,8 +71,12 @@ University of Amsterdam\\
 Science Park 904\\
 1098 XH Amsterdam
 }
-\newcommand{\theDate}{July 2, 2021}
+\newcommand{\theDate}{\today}
 
 \newcommand{\urltor}{https://www.tor.com/2011/06/21/norvig-vs-chomsky-and-the-fight-for-the-future-of-ai/}
-\newcommand{\urlmetadata}{\href{https://github.com/linkpark/metarl-offloading/tree/master/env/mec_offloaing_envs/data}{github.com/linkpark/metarl-offloading}}
+\newcommand{\urlmetadata}{\href{https://github.com/linkpark/metarl-offloading/tree/master/env/mec_offloaing_envs/data/meta_offloading_20}{github.com/linkpark/metarl-offloading}}
 \newcommand{\rlbased}{{\gls{rl}}-based }
+
+\title{\theTitle}
+\author{\theAuthor}
+\date{\theDate}
