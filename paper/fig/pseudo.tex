@@ -1,0 +1,33 @@
+\begin{figure}[htp!]
+    \centering
+\begin{Verbatim}[frame=single]
+for num, request in requests {
+    ccr := choice([0.3, 0.4, 0.5],
+                  weights=[1564, 1584, 1565])
+    fat := choice([0.4, 0.5, 0.6, 0.7, 0.8],
+                  weights=[1000, 1000, 916, 900, 900])
+    density := choice([0.4, 0.5, 0.6, 0.7, 0.8],
+                      weights=[716, 1000, 1000, 1000, 1000])
+    data := request.transfer_time
+
+
+    system("daggen \
+            --dot -n 20 \
+            --regular 0.5 \
+            --ccr %d \
+            --fat %d \
+            --density %d \
+            --mindata %d \
+            --maxdata %d \
+            > %d.gv".format(ccr, fat, density, data, data, num)
+        )
+}
+\end{Verbatim}
+    \caption{Pseudo code for converting the Euro-Argo data to \glspl{dag}. The
+    parameters follow the distribution of the \mrlco data. The mindata and
+    maxdata are the transfer time from the request. A string is
+    formatted to pass the parameters to the daggen tool. This string is
+    executed by the system. The output of daggen is written to a file with the
+    index of the request as filename and gv as extension.}
+    \label{fig:pseudo}
+\end{figure}

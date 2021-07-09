@@ -1,0 +1,19 @@
+\begin{table}[htp!]
+    \centering
+    \caption{Achievements from \gls{rl}-based job schedulers as shown in their
+    paper. The achievements are compared in their papers to heuristic-based
+    approaches.}
+    \label{rlschedulers}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{p{4.2cm}||l|l|l}
+        Literature & \protect\citeA{mao2019} & \protect\citeA{wang2020} & \protect\citeA{zhang2020}\\ \hline
+        Name & Decima & MRLCO & -\\
+        Metric & \jct & Latency & Objective\footnotemark\\
+        Baseline & \gls{fifo} & Greedy Heuristic & \sjf\\
+        Performance Deviation (result / baseline) & 61.1s / 111.4s & 743.42ms / 893.62ms &
+        2508.28 / 3208.69\\
+    \end{tabular}
+    }
+\end{table}
+
+\footnotetext{Average of the makespan, flowtime and tardiness.}
